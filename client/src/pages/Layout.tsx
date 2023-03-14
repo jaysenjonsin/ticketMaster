@@ -3,6 +3,7 @@ import NavBar from '../components/NavBar';
 
 type props = {
   children: React.ReactNode;
+  style?: React.CSSProperties;
 };
 const Layout = ({ children }: props) => {
   return (
