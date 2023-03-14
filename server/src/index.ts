@@ -1,7 +1,7 @@
 import express from 'express';
 import { config } from 'dotenv';
-import searchRouter from '../routes/search';
-import favoritesRouter from '../routes/favorites';
+import searchRouter from './routes/search';
+import favoritesRouter from './routes/favorites';
 config({ path: '../.env' });
 
 const main = async () => {
