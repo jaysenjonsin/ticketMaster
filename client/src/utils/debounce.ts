@@ -10,19 +10,31 @@
 //   };
 // };
 
+// export const debounce = (cb: (...args: any[]) => any, delay: number) => {
+//   let timeout: number;
+//   return (...args: any[]) => {
+//     clearTimeout(timeout);
+//     setTimeout(() => {
+//       cb(...args);
+//     }, delay);
+//   };
+// };
+
 export const debounce = (cb: (...args: any[]) => any, delay: number) => {
   let timeout: number;
+  let lastCallTime = 0; // initialize lastCallTime to 0
+
   return (...args: any[]) => {
-    clearTimeout(timeout);
-    setTimeout(() => {
-      cb(...args);
-    }, delay);
+    const currentTime = Date.now();
+    const timeSinceLastCall = currentTime - lastCallTime;
+
+    if (timeSinceLastCall >= delay) {
+      // check if enough time has passed
+      clearTimeout(timeout);
+      lastCallTime = currentTime; // update lastCallTime
+      setTimeout(() => {
+        cb(...args);
+      }, delay);
+    }
   };
 };
-
-// fn.apply is a method in JavaScript that allows you to call a function with a specific context (the this value) and a set of arguments.
-
-// The apply method takes two arguments:
-
-// The this value to be used as the context of the function call.
-// An array or an array-like object containing the arguments to be passed to the function.

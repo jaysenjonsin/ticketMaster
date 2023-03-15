@@ -1,14 +1,15 @@
-import Layout from '../components/Layout';
+import debounce from 'debounce';
+import { useCallback, useEffect, useState } from 'react';
+import { Col, Container, Row } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { Row, Col, Container } from 'react-bootstrap';
-import { useEffect, useState } from 'react';
 import party from '../assets/ticketMasterParty.jpeg';
+import Layout from '../components/Layout';
 import { autoComplete } from '../services/autoComplete';
-import { flattenSuggestions } from '../utils/flattenSuggestions';
 import { getLatAndLong } from '../services/getLatAndLong';
 import { searchEvent } from '../services/searchEvent';
-import { debounce } from '../utils/debounce';
+import { flattenSuggestions } from '../utils/flattenSuggestions';
+import EventsTable from '../components/EventsTable';
 
 const SearchForm = () => {
   const [keyword, setKeyword] = useState('');
@@ -18,8 +19,9 @@ const SearchForm = () => {
   const [autoDetect, setAutoDetect] = useState(false);
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const [validResults, setValidResults] = useState(null);
 
-  const fetchSuggestions = async (userInput: string) => {
+  const fetchSuggestions = useCallback(async (userInput: string) => {
     try {
       const suggestions = await autoComplete(userInput);
       const suggestionsFlattened = flattenSuggestions(suggestions);
@@ -29,15 +31,21 @@ const SearchForm = () => {
       const message = err.response?.data.message ?? err.toString();
       window.alert(message);
     }
-  };
+  }, []);
 
-  const debouncedFetchSuggestions = debounce(fetchSuggestions, 1000);
+  //need to use useCallback -> if not, you create new debounced func every time component renders (since it is defined in this component), meaning previous debounced func is lost. Now debouncedFetchSuggestions is only created on initial component load
+  const debouncedFetchSuggestions = useCallback(
+    debounce(fetchSuggestions, 700),
+    []
+  );
 
   useEffect(() => {
     if (keyword.length > 0) {
       debouncedFetchSuggestions(keyword);
-    } else setShowSuggestions(false);
-  }, [keyword]);
+    } else {
+      setShowSuggestions(false);
+    }
+  }, [keyword, debouncedFetchSuggestions]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -53,9 +61,13 @@ const SearchForm = () => {
         longitude,
       };
 
-      const events = await searchEvent(userInput);
+      const searchResults = await searchEvent(userInput);
+      console.log('SEARCH RESULTS: ', searchResults);
       //if events._embedded, means theres events
-      console.log('EVENTS: ', events);
+      if (searchResults._embedded) {
+        //cannot set results directly to searchResults._embedded.events here, possibly due to async nature of setState
+        setValidResults(searchResults);
+      }
     } catch (err: any) {
       const message = err?.response.data.message ?? err.toString();
       window.alert(message);
@@ -76,8 +88,10 @@ const SearchForm = () => {
       <Layout>
         <div
           style={{
-            height: '100vh',
             display: 'flex',
+            flexDirection: 'column',
+            //for when results table shows
+            gap: '3rem',
             alignItems: 'center',
             justifyContent: 'center',
             backgroundImage: `url(${party})`,
@@ -91,6 +105,7 @@ const SearchForm = () => {
               padding: '4rem 1rem',
               margin: '0 auto',
               maxWidth: '40rem',
+              marginTop: '4rem',
             }}
           >
             <h1 style={{ color: 'white', textAlign: 'center' }}>
@@ -114,6 +129,7 @@ const SearchForm = () => {
                   </Form.Label>
                   <div style={{ position: 'relative' }}>
                     <Form.Control
+                      required
                       type='text'
                       placeholder='Enter keyword'
                       value={keyword}
@@ -178,6 +194,7 @@ const SearchForm = () => {
                     Category<span style={{ color: 'red' }}>*</span>
                   </Form.Label>
                   <Form.Control
+                    required
                     as='select'
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
@@ -202,6 +219,7 @@ const SearchForm = () => {
                   </Form.Label>
                   <Form.Control
                     type='text'
+                    required
                     placeholder='Enter location'
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
@@ -242,6 +260,14 @@ const SearchForm = () => {
               </Row>
             </Form>
           </Container>
+          <div
+            style={{
+              width: '80%',
+              minWidth: '30rem',
+            }}
+          >
+            {validResults && <EventsTable eventInfo={validResults} />}
+          </div>
         </div>
       </Layout>
     </>
