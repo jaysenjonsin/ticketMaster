@@ -1,8 +1,22 @@
-export const debounce = (fn: Function, ms: number) => {
-  let timeoutId: ReturnType<typeof setTimeout>;
-  return function (this: any, ...args: any[]) {
-    clearTimeout(timeoutId);
-    timeoutId = setTimeout(() => fn.apply(this, args), ms);
+// export const debounce = (func: (...args: any[]) => void, wait: number) => {
+//   let timeout: ReturnType<typeof setTimeout>;
+//   return (...args: any[]) => {
+//     const later = () => {
+//       clearTimeout(timeout);
+//       func(...args);
+//     };
+//     clearTimeout(timeout);
+//     timeout = setTimeout(later, wait);
+//   };
+// };
+
+export const debounce = (cb: (...args: any[]) => any, delay: number) => {
+  let timeout: number;
+  return (...args: any[]) => {
+    clearTimeout(timeout);
+    setTimeout(() => {
+      cb(...args);
+    }, delay);
   };
 };
 

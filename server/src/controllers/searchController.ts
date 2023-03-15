@@ -9,23 +9,25 @@ export const searchEvent = async (
   const {
     userInput: { keyword, distance, category, latitude, longitude },
   }: any = req.query;
-  console.log('USERRRRRR INPUTTTT', keyword);
   try {
-    console.log('KEYWORD', keyword);
-    console.log('distance ', distance);
-    console.log('category', category);
-    console.log('latitude', latitude);
-    console.log('longitude', longitude);
-    if (!keyword || !distance || !category || !latitude || !longitude) {
+    if (!keyword || !category || !latitude || !longitude) {
       res.status(400);
       throw new Error('Please enter all required fields');
     }
-    if (!Number(distance)) {
-      res.status(400);
-      throw new Error('Please enter a valid number for distance (in miles)');
+    let ticketMaster_URL = `https://app.ticketmaster.com/discovery/v2/events.json?apikey=${process.env.TICKETMASTER_API_KEY}&keyword=${keyword}&unit=miles&segmentId=${category}&geoPoint=${latitude},${longitude}`;
+
+    if (distance) {
+      if (!Number(distance)) {
+        res.status(400);
+        throw new Error('Please enter a valid number for distance(in miles');
+      } else ticketMaster_URL += `&radius=${distance}`;
     }
-    const ticketMaster_URL = `https://app.ticketmaster.com/discovery/v2/events.json?apikey=${process.env.TICKETMASTER_API_KEY}&keyword=${keyword}&radius=${distance}&unit=miles&segmentId=${category}&geoPoint=${latitude},${longitude}`;
+
     const { data } = await axios.get(ticketMaster_URL);
+    if (!data._embedded) {
+      res.status(400);
+      throw new Error('No events found');
+    }
     res.status(200).json(data);
   } catch (err) {
     return next(err);

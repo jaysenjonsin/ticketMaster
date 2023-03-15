@@ -8,6 +8,7 @@ import { autoComplete } from '../services/autoComplete';
 import { flattenSuggestions } from '../utils/flattenSuggestions';
 import { getLatAndLong } from '../services/getLatAndLong';
 import { searchEvent } from '../services/searchEvent';
+import { debounce } from '../utils/debounce';
 
 const SearchForm = () => {
   const [keyword, setKeyword] = useState('');
@@ -30,9 +31,11 @@ const SearchForm = () => {
     }
   };
 
+  const debouncedFetchSuggestions = debounce(fetchSuggestions, 1000);
+
   useEffect(() => {
     if (keyword.length > 0) {
-      fetchSuggestions(keyword);
+      debouncedFetchSuggestions(keyword);
     } else setShowSuggestions(false);
   }, [keyword]);
 
@@ -49,8 +52,9 @@ const SearchForm = () => {
         latitude,
         longitude,
       };
-      console.log('USER INPUT   TTT', userInput);
+
       const events = await searchEvent(userInput);
+      //if events._embedded, means theres events
       console.log('EVENTS: ', events);
     } catch (err: any) {
       const message = err?.response.data.message ?? err.toString();
