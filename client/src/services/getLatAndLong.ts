@@ -11,6 +11,5 @@ export const getLatAndLong = async (location: string) => {
       location: formattedLocation,
     },
   });
-  console.log('DATA IN GET LAT AND LONG: ', data);
   return data;
 };

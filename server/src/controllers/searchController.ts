@@ -1,12 +1,35 @@
 import axios from 'axios';
 import { Request, Response, NextFunction } from 'express';
 
-export const searchEvent = (
-  _req: Request,
+export const searchEvent = async (
+  req: Request,
   res: Response,
-  _next: NextFunction
+  next: NextFunction
 ) => {
-  res.status(200).json({ message: 'hello from search event' });
+  const {
+    userInput: { keyword, distance, category, latitude, longitude },
+  }: any = req.query;
+  console.log('USERRRRRR INPUTTTT', keyword);
+  try {
+    console.log('KEYWORD', keyword);
+    console.log('distance ', distance);
+    console.log('category', category);
+    console.log('latitude', latitude);
+    console.log('longitude', longitude);
+    if (!keyword || !distance || !category || !latitude || !longitude) {
+      res.status(400);
+      throw new Error('Please enter all required fields');
+    }
+    if (!Number(distance)) {
+      res.status(400);
+      throw new Error('Please enter a valid number for distance (in miles)');
+    }
+    const ticketMaster_URL = `https://app.ticketmaster.com/discovery/v2/events.json?apikey=${process.env.TICKETMASTER_API_KEY}&keyword=${keyword}&radius=${distance}&unit=miles&segmentId=${category}&geoPoint=${latitude},${longitude}`;
+    const { data } = await axios.get(ticketMaster_URL);
+    res.status(200).json(data);
+  } catch (err) {
+    return next(err);
+  }
 };
 
 export const autoComplete = async (

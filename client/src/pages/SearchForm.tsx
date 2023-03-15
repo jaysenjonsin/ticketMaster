@@ -7,6 +7,7 @@ import party from '../assets/ticketMasterParty.jpeg';
 import { autoComplete } from '../services/autoComplete';
 import { flattenSuggestions } from '../utils/mapSuggestions';
 import { getLatAndLong } from '../services/getLatAndLong';
+import { searchEvent } from '../services/searchEvent';
 
 const SearchForm = () => {
   const [keyword, setKeyword] = useState('');
@@ -39,12 +40,20 @@ const SearchForm = () => {
     e.preventDefault();
     console.log('FORM SUBMITTED');
     try {
-      if (autoDetect === false) {
-        const { latitude, longitude } = await getLatAndLong(location);
-      }
+      //later, do if (!autoDetect) functionality - if autoDetect, use current location
+      const { latitude, longitude } = await getLatAndLong(location);
+      const userInput = {
+        keyword: keyword.split(' ').join('+'),
+        distance,
+        category,
+        latitude,
+        longitude,
+      };
+      console.log('USER INPUT   TTT', userInput);
+      const events = await searchEvent(userInput);
+      console.log('EVENTS: ', events);
     } catch (err: any) {
       const message = err?.response.data.message ?? err.toString();
-      console.log('MESSAGE ', message);
       window.alert(message);
     }
   };
@@ -170,11 +179,11 @@ const SearchForm = () => {
                     onChange={(e) => setCategory(e.target.value)}
                   >
                     <option value=''>Select category</option>
-                    <option value='food'>Music</option>
-                    <option value='shopping'>Sports</option>
-                    <option value='entertainment'>Arts & Theatre</option>
-                    <option value='entertainment'>Film</option>
-                    <option value='entertainment'>Miscellaneous</option>
+                    <option value='KZFzniwnSyZfZ7v7nJ'>Music</option>
+                    <option value='KZFzniwnSyZfZ7v7nE'>Sports</option>
+                    <option value='KZFzniwnSyZfZ7v7na'>Arts & Theatre</option>
+                    <option value='KZFzniwnSyZfZ7v7nJQ'>Film</option>
+                    <option value='KZFzniwnSyZfZ7v7nJQ'>Miscellaneous</option>
                   </Form.Control>
                 </Form.Group>
               </Row>
