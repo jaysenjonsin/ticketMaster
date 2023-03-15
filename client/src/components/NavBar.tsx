@@ -14,7 +14,7 @@ const NavBar = () => {
         <Container>
           <Nav style={{ marginLeft: 'auto' }}>
             <Nav.Link
-              href='#home'
+              href=''
               style={{
                 border: '1px solid white',
                 borderRadius: '1rem',
@@ -23,7 +23,7 @@ const NavBar = () => {
             >
               Search
             </Nav.Link>
-            <Nav.Link href='#features' style={{ color: 'white' }}>
+            <Nav.Link href='' style={{ color: 'white' }}>
               Favorites
             </Nav.Link>
           </Nav>

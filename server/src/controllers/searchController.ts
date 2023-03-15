@@ -14,14 +14,13 @@ export const autoComplete = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { userInput } = req.body;
-
+  const { userInput } = req.query;
   try {
     const { data } =
-      await axios(`https://app.ticketmaster.com/discovery/v2/suggest?apikey=${APIKEYHERE}&keyword=
+      await axios.get(`https://app.ticketmaster.com/discovery/v2/suggest?apikey=${process.env.TICKETMASTER_API_KEY}&keyword=
     ${userInput}`);
 
-    res.status(200).json({ data });
+    res.status(200).json(data);
   } catch (err) {
     return next(err);
   }

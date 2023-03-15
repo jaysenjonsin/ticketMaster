@@ -2,8 +2,10 @@ import Layout from '../components/Layout';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { Row, Col, Container } from 'react-bootstrap';
-import { useState } from 'react';
-import party from '../../public/ticketMasterParty.jpeg';
+import { useEffect, useState } from 'react';
+import party from '../assets/ticketMasterParty.jpeg';
+import { autoComplete } from '../services/autoComplete';
+import { flattenSuggestions } from '../utils/mapSuggestions';
 
 const SearchForm = () => {
   const [keyword, setKeyword] = useState('');
@@ -11,9 +13,28 @@ const SearchForm = () => {
   const [category, setCategory] = useState('');
   const [location, setLocation] = useState('');
   const [autoDetect, setAutoDetect] = useState(false);
+  const [suggestions, setSuggestions] = useState([]);
+
+  console.log('suggestions:', suggestions);
+  const fetchSuggestions = async (userInput: string) => {
+    try {
+      const suggestions = await autoComplete(userInput);
+      const suggestionsFlattened = flattenSuggestions(suggestions);
+      //@ts-ignore
+      setSuggestions(suggestionsFlattened);
+    } catch (err: any) {
+      const message = err.response?.data.message ?? err.toString();
+      window.alert(message);
+    }
+  };
+
+  useEffect(() => {
+    if (keyword.length > 0) fetchSuggestions(keyword);
+  }, [keyword]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    //submit data
   };
 
   const handleClear = () => {
@@ -23,7 +44,6 @@ const SearchForm = () => {
     setLocation('');
     setAutoDetect(false);
   };
-
 
   return (
     <>
@@ -61,12 +81,42 @@ const SearchForm = () => {
                   <Form.Label>
                     Keyword<span style={{ color: 'red' }}>*</span>
                   </Form.Label>
-                  <Form.Control
-                    type='text'
-                    placeholder='Enter keyword'
-                    value={keyword}
-                    onChange={(e) => setKeyword(e.target.value)}
-                  />
+                  <div style={{ position: 'relative' }}>
+                    <Form.Control
+                      type='text'
+                      placeholder='Enter keyword'
+                      value={keyword}
+                      onChange={async (e) => {
+                        setKeyword(e.target.value);
+                      }}
+                    />
+                    {keyword.length > 0 && (
+                      <select
+                        style={{
+                          position: 'absolute',
+                          top: '100%',
+                          // left: 0,
+                          width: '100%',
+                          fontSize: '1rem',
+                          backgroundColor: 'white',
+                          border: '1px solid #ced4da',
+                          borderRadius: '0.25rem',
+                          zIndex: 10,
+                        }}
+                        size={12} //show many suggestions to show in a <select>
+                        onChange={(e) => {
+                          setKeyword(e.target.value);
+                        }}
+                      >
+                        {suggestions.map((suggestion: any, idx) => (
+                          //@ts-ignore
+                          <option key={idx} value={suggestion.name}>
+                            {suggestion.name}
+                          </option>
+                        ))}
+                      </select>
+                    )}
+                  </div>
                 </Form.Group>
               </Row>
               <Row>
@@ -141,7 +191,11 @@ const SearchForm = () => {
                   >
                     Submit
                   </Button>
-                  <Button variant='secondary' type='reset'>
+                  <Button
+                    variant='secondary'
+                    type='reset'
+                    onClick={handleClear}
+                  >
                     Clear
                   </Button>
                 </Col>
