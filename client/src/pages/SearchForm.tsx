@@ -14,6 +14,7 @@ const SearchForm = () => {
   const [location, setLocation] = useState('');
   const [autoDetect, setAutoDetect] = useState(false);
   const [suggestions, setSuggestions] = useState([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
 
   console.log('suggestions:', suggestions);
   const fetchSuggestions = async (userInput: string) => {
@@ -29,7 +30,9 @@ const SearchForm = () => {
   };
 
   useEffect(() => {
-    if (keyword.length > 0) fetchSuggestions(keyword);
+    if (keyword.length > 0) {
+      fetchSuggestions(keyword);
+    } else setShowSuggestions(false);
   }, [keyword]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -43,6 +46,7 @@ const SearchForm = () => {
     setCategory('');
     setLocation('');
     setAutoDetect(false);
+    setShowSuggestions(false);
   };
 
   return (
@@ -71,7 +75,12 @@ const SearchForm = () => {
               Events Search
             </h1>
             <hr style={{ color: 'white' }} />
-            <Form onSubmit={handleSubmit} style={{ color: '#63b5cf' }}>
+            <Form
+              onSubmit={handleSubmit}
+              //turn off default autocomplete
+              autoComplete='off'
+              style={{ color: '#63b5cf' }}
+            >
               <Row>
                 <Form.Group
                   as={Col}
@@ -87,17 +96,18 @@ const SearchForm = () => {
                       placeholder='Enter keyword'
                       value={keyword}
                       onChange={async (e) => {
+                        setShowSuggestions(true);
                         setKeyword(e.target.value);
                       }}
                     />
-                    {keyword.length > 0 && (
+                    {keyword.length > 0 && showSuggestions && (
                       <select
                         style={{
                           position: 'absolute',
-                          top: '100%',
-                          // left: 0,
                           width: '100%',
-                          fontSize: '1rem',
+                          paddingTop: '0.5rem',
+                          paddingBottom: '0.5rem',
+                          paddingLeft: '1rem',
                           backgroundColor: 'white',
                           border: '1px solid #ced4da',
                           borderRadius: '0.25rem',
@@ -110,7 +120,11 @@ const SearchForm = () => {
                       >
                         {suggestions.map((suggestion: any, idx) => (
                           //@ts-ignore
-                          <option key={idx} value={suggestion.name}>
+                          <option
+                            key={idx}
+                            value={suggestion.name}
+                            onClick={() => setShowSuggestions(false)}
+                          >
                             {suggestion.name}
                           </option>
                         ))}
@@ -169,6 +183,7 @@ const SearchForm = () => {
                     placeholder='Enter location'
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
+                    disabled={autoDetect}
                   />
                 </Form.Group>
               </Row>
@@ -178,7 +193,10 @@ const SearchForm = () => {
                     type='checkbox'
                     label='Auto-detect your location'
                     checked={autoDetect}
-                    onChange={(e) => setAutoDetect(e.target.checked)}
+                    onChange={(e) => {
+                      setAutoDetect(e.target.checked);
+                      setLocation('');
+                    }}
                   />
                 </Form.Group>
               </Row>
