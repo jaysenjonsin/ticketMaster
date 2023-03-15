@@ -24,9 +24,12 @@ const SearchForm = () => {
   const fetchSuggestions = useCallback(async (userInput: string) => {
     try {
       const suggestions = await autoComplete(userInput);
+      console.log('SUGGESTIONS: ', suggestions);
       const suggestionsFlattened = flattenSuggestions(suggestions);
+      console.log('FLATTENED: ', suggestionsFlattened);
       //@ts-ignore
       setSuggestions(suggestionsFlattened);
+      setShowSuggestions(true);
     } catch (err: any) {
       const message = err.response?.data.message ?? err.toString();
       window.alert(message);
@@ -43,6 +46,7 @@ const SearchForm = () => {
     if (keyword.length > 0) {
       debouncedFetchSuggestions(keyword);
     } else {
+      setSuggestions([]);
       setShowSuggestions(false);
     }
   }, [keyword, debouncedFetchSuggestions]);
@@ -94,7 +98,6 @@ const SearchForm = () => {
             gap: '3rem',
             alignItems: 'center',
             justifyContent: 'center',
-            backgroundImage: `url(${party})`,
           }}
         >
           <Container
@@ -134,7 +137,6 @@ const SearchForm = () => {
                       placeholder='Enter keyword'
                       value={keyword}
                       onChange={async (e) => {
-                        setShowSuggestions(true);
                         setKeyword(e.target.value);
                       }}
                     />

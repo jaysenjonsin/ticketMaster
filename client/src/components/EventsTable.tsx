@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Table from 'react-bootstrap/Table';
 type Props = {
   eventInfo: any;
@@ -6,6 +6,8 @@ type Props = {
 
 const EventsTable = ({ eventInfo }: Props) => {
   const arrOfSearchResults = eventInfo._embedded.events;
+  const [showDetailCard, setShowDetailCard] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState(null);
   console.log('ARRAY: ', arrOfSearchResults);
   return (
     <Table striped bordered hover variant='dark'>
@@ -20,18 +22,18 @@ const EventsTable = ({ eventInfo }: Props) => {
       </thead>
       <tbody>
         {arrOfSearchResults.map((event: any, index: number) => (
-          <tr key={index}>
+          <tr key={index} style={{ cursor: 'pointer' }}>
             <td>{event?.dates.start.localDate}</td>
-            <td>
+            <td align='center'>
               <img
                 src={event?.images[0].url}
                 alt='event image'
-                style={{ objectFit: 'cover', width: '50%' }}
+                style={{ objectFit: 'cover', width: '10rem' }}
               />
             </td>
-            <td>{event.event}</td>
-            <td>{event.genre}</td>
-            <td>{event.venue}</td>
+            <td>{event?.name}</td>
+            <td>{event?.classifications[0].segment.name}</td>
+            <td>{event?._embedded.venues[0].name}</td>
           </tr>
         ))}
       </tbody>
