@@ -25,3 +25,30 @@ export const autoComplete = async (
     return next(err);
   }
 };
+
+export const getLocation = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { location } = req.query;
+  try {
+    const { data } = await axios.get(
+      `https://maps.googleapis.com/maps/api/geocode/json?address=${location}&key=${process.env.GOOGLE_API_KEY}`
+    );
+
+    if (!data.results[0]) {
+      res.status(400);
+      throw new Error('invalid location');
+    }
+
+    console.log('DATA: ', data);
+    console.log('LOCATION: ', location);
+    res.status(200).json({
+      latitude: data.results[0].geometry.location.lat,
+      longitude: data.results[0].geometry.location.lng,
+    });
+  } catch (err) {
+    return next(err);
+  }
+};

@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import party from '../assets/ticketMasterParty.jpeg';
 import { autoComplete } from '../services/autoComplete';
 import { flattenSuggestions } from '../utils/mapSuggestions';
+import { getLatAndLong } from '../services/getLatAndLong';
 
 const SearchForm = () => {
   const [keyword, setKeyword] = useState('');
@@ -16,7 +17,6 @@ const SearchForm = () => {
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
 
-  console.log('suggestions:', suggestions);
   const fetchSuggestions = async (userInput: string) => {
     try {
       const suggestions = await autoComplete(userInput);
@@ -35,9 +35,18 @@ const SearchForm = () => {
     } else setShowSuggestions(false);
   }, [keyword]);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    //submit data
+    console.log('FORM SUBMITTED');
+    try {
+      if (autoDetect === false) {
+        const { latitude, longitude } = await getLatAndLong(location);
+      }
+    } catch (err: any) {
+      const message = err?.response.data.message ?? err.toString();
+      console.log('MESSAGE ', message);
+      window.alert(message);
+    }
   };
 
   const handleClear = () => {

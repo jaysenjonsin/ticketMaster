@@ -1,22 +1,16 @@
 import axios from 'axios';
+import { API_URL } from '../utils/constants';
 
-const API_URL = 'http://localhost:5000/search/';
+const URL = API_URL + 'search/autocomplete';
 
-const API_KEY: any = ''; //USE DOTENV FILE
-
-// export const bleh = async (userFormInput: any) => {
-//   const { data } = await axios.get(
-//     `https://app.ticketmaster.com/discovery/v2/suggest?apikey=${API_KEY}&keyword=${userFormInput}`,
-//     userFormInput
-//   );
-//   return data;
-// };
+// const API_URL = 'http://localhost:5000/search/';
 
 export const autoComplete = async (userInput: string) => {
-  const { data } = await axios.get(API_URL + 'autocomplete', {
+  const { data } = await axios.get(URL, {
     params: {
       userInput,
     },
   });
+  console.log('DATA: ', data);
   return data._embedded;
 };

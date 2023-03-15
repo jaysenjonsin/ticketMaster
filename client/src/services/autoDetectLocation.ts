@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useState } from 'react';
 
-// export const Autodetect = () => {
+// export const autoDetectLocation = () => {
 //   const [lat, setLat] = useState('');
 //   const [long, setLong] = useState('');
 
@@ -19,7 +19,7 @@ import { useState } from 'react';
 //      setLong(location.substring(location.indexOf(',') + 1, location.length))
 //   };
 
-// const Autodetect = () => {
+// const autoDetectLocation= () => {
 //   const ipUrl = "https://ipinfo.io/?token=";
 //   const autoDetect = () => {
 //      Axios.get(ipUrl)

@@ -23,6 +23,7 @@ const main = async () => {
   app.use((err: any, _: Request, res: Response, __: NextFunction) => {
     const statusCode = res.statusCode ? res.statusCode : 500;
     const message = err.message ? err.message : 'unknown error occured';
+    console.log(message);
     res.status(statusCode).json({ message });
   });
 
