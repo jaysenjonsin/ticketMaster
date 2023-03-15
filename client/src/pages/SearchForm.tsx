@@ -1,8 +1,9 @@
-import Layout from './Layout';
+import Layout from '../components/Layout';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { Row, Col, Container } from 'react-bootstrap';
 import { useState } from 'react';
+import party from '../../public/ticketMasterParty.jpeg';
 
 const SearchForm = () => {
   const [keyword, setKeyword] = useState('');
@@ -23,6 +24,7 @@ const SearchForm = () => {
     setAutoDetect(false);
   };
 
+
   return (
     <>
       <Layout>
@@ -32,12 +34,13 @@ const SearchForm = () => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
+            backgroundImage: `url(${party})`,
           }}
         >
           <Container
             style={{
-              backgroundColor: 'black',
-              opacity: '70%',
+              backgroundColor: 'rgba(120, 120, 120, 0.5)',
+              backdropFilter: 'blur(6px)',
               borderRadius: '25px',
               padding: '4rem 1rem',
               margin: '0 auto',
@@ -55,7 +58,9 @@ const SearchForm = () => {
                   controlId='formKeyword'
                   style={{ marginBottom: '1rem' }}
                 >
-                  <Form.Label>Keyword</Form.Label>
+                  <Form.Label>
+                    Keyword<span style={{ color: 'red' }}>*</span>
+                  </Form.Label>
                   <Form.Control
                     type='text'
                     placeholder='Enter keyword'
@@ -83,16 +88,20 @@ const SearchForm = () => {
                   controlId='formCategory'
                   style={{ marginBottom: '1rem' }}
                 >
-                  <Form.Label>Category</Form.Label>
+                  <Form.Label>
+                    Category<span style={{ color: 'red' }}>*</span>
+                  </Form.Label>
                   <Form.Control
                     as='select'
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
                   >
                     <option value=''>Select category</option>
-                    <option value='food'>Food</option>
-                    <option value='shopping'>Shopping</option>
-                    <option value='entertainment'>Entertainment</option>
+                    <option value='food'>Music</option>
+                    <option value='shopping'>Sports</option>
+                    <option value='entertainment'>Arts & Theatre</option>
+                    <option value='entertainment'>Film</option>
+                    <option value='entertainment'>Miscellaneous</option>
                   </Form.Control>
                 </Form.Group>
               </Row>
@@ -102,7 +111,9 @@ const SearchForm = () => {
                   controlId='formLocation'
                   style={{ marginBottom: '1rem' }}
                 >
-                  <Form.Label>Location</Form.Label>
+                  <Form.Label>
+                    Location<span style={{ color: 'red' }}>*</span>
+                  </Form.Label>
                   <Form.Control
                     type='text'
                     placeholder='Enter location'
@@ -120,6 +131,20 @@ const SearchForm = () => {
                     onChange={(e) => setAutoDetect(e.target.checked)}
                   />
                 </Form.Group>
+              </Row>
+              <Row>
+                <Col style={{ display: 'flex', justifyContent: 'center' }}>
+                  <Button
+                    variant='primary'
+                    type='submit'
+                    style={{ marginRight: '10px' }}
+                  >
+                    Submit
+                  </Button>
+                  <Button variant='secondary' type='reset'>
+                    Clear
+                  </Button>
+                </Col>
               </Row>
             </Form>
           </Container>

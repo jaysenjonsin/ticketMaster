@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { NextFunction } from 'express';
 import { config } from 'dotenv';
 import searchRouter from './routes/search';
 import favoritesRouter from './routes/favorites';
@@ -11,6 +11,12 @@ const main = async () => {
 
   app.use('/search', searchRouter);
   app.use('/favorites', favoritesRouter);
+
+  app.use((err: any, _: Request, res: Response, __: NextFunction) => {
+    const statusCode = res.statusCode ? res.statusCode : 500;
+    const message = err.message ? err.message : 'unknown error occured';
+    res.status(statusCode).json({ message });
+  });
 
   app.listen(process.env.PORT, () => {
     console.log(
