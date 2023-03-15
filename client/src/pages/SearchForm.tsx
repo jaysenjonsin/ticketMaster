@@ -20,6 +20,7 @@ const SearchForm = () => {
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [validResults, setValidResults] = useState(null);
+  const [showDetailCard, setShowDetailCard] = useState(false);
 
   const fetchSuggestions = useCallback(async (userInput: string) => {
     try {
@@ -29,7 +30,6 @@ const SearchForm = () => {
       console.log('FLATTENED: ', suggestionsFlattened);
       //@ts-ignore
       setSuggestions(suggestionsFlattened);
-      setShowSuggestions(true);
     } catch (err: any) {
       const message = err.response?.data.message ?? err.toString();
       window.alert(message);
@@ -44,6 +44,7 @@ const SearchForm = () => {
 
   useEffect(() => {
     if (keyword.length > 0) {
+      setShowSuggestions(true);
       debouncedFetchSuggestions(keyword);
     } else {
       setSuggestions([]);
@@ -140,7 +141,7 @@ const SearchForm = () => {
                         setKeyword(e.target.value);
                       }}
                     />
-                    {keyword.length > 0 && showSuggestions && (
+                    {showSuggestions && (
                       <select
                         style={{
                           position: 'absolute',
@@ -152,6 +153,7 @@ const SearchForm = () => {
                           border: '1px solid #ced4da',
                           borderRadius: '0.25rem',
                           zIndex: 10,
+                          cursor: 'pointer',
                         }}
                         size={12} //show many suggestions to show in a <select>
                         onChange={(e) => {
@@ -162,8 +164,9 @@ const SearchForm = () => {
                           //@ts-ignore
                           <option
                             key={idx}
-                            value={suggestion.name}
+                            value={suggestion?.name}
                             onClick={() => setShowSuggestions(false)}
+                            style={{ marginBottom: '1rem' }}
                           >
                             {suggestion.name}
                           </option>
@@ -268,7 +271,13 @@ const SearchForm = () => {
               minWidth: '30rem',
             }}
           >
-            {validResults && <EventsTable eventInfo={validResults} />}
+            {validResults && (
+              <EventsTable
+                eventInfo={validResults}
+                showDetailCard={showDetailCard}
+                setShowDetailCard={setShowDetailCard}
+              />
+            )}
           </div>
         </div>
       </Layout>
