@@ -11,6 +11,6 @@ export const autoComplete = async (userInput: string) => {
       userInput,
     },
   });
-  console.log('DATA: ', data);
+  console.log('DATA FROM AUTOCOMPLETE: ', data);
   return data._embedded;
 };

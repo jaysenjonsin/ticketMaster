@@ -9,6 +9,6 @@ export const searchEvent = async (userInput: any) => {
     },
   });
 
-  console.log('USER INPUT: ', userInput);
+  console.log('DATA FROM SEARCH EVENT', data);
   return data;
 };

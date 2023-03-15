@@ -5,7 +5,7 @@ import { Row, Col, Container } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
 import party from '../assets/ticketMasterParty.jpeg';
 import { autoComplete } from '../services/autoComplete';
-import { flattenSuggestions } from '../utils/mapSuggestions';
+import { flattenSuggestions } from '../utils/flattenSuggestions';
 import { getLatAndLong } from '../services/getLatAndLong';
 import { searchEvent } from '../services/searchEvent';
 
