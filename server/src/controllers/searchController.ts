@@ -77,3 +77,19 @@ export const getLocation = async (
     return next(err);
   }
 };
+
+export const getExtraEventDetails = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  console.log(req, res, next);
+
+  try {
+    const { id } = req.query;
+    console.log(req.query);
+    res.status(200).json(id);
+  } catch (err: any) {
+    return next(err);
+  }
+};

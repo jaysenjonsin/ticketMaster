@@ -11,7 +11,7 @@ import { searchEvent } from '../services/searchEvent';
 import { flattenSuggestions } from '../utils/flattenSuggestions';
 import EventsTable from '../components/EventsTable';
 
-const SearchForm = () => {
+const SearchPage = () => {
   const [keyword, setKeyword] = useState('');
   const [distance, setDistance] = useState('');
   const [category, setCategory] = useState('');
@@ -25,9 +25,7 @@ const SearchForm = () => {
   const fetchSuggestions = useCallback(async (userInput: string) => {
     try {
       const suggestions = await autoComplete(userInput);
-      console.log('SUGGESTIONS: ', suggestions);
       const suggestionsFlattened = flattenSuggestions(suggestions);
-      console.log('FLATTENED: ', suggestionsFlattened);
       //@ts-ignore
       setSuggestions(suggestionsFlattened);
     } catch (err: any) {
@@ -38,7 +36,7 @@ const SearchForm = () => {
 
   //need to use useCallback -> if not, you create new debounced func every time component renders (since it is defined in this component), meaning previous debounced func is lost. Now debouncedFetchSuggestions is only created on initial component load
   const debouncedFetchSuggestions = useCallback(
-    debounce(fetchSuggestions, 700),
+    debounce(fetchSuggestions, 600),
     []
   );
 
@@ -265,24 +263,18 @@ const SearchForm = () => {
               </Row>
             </Form>
           </Container>
-          <div
-            style={{
-              width: '80%',
-              minWidth: '30rem',
-            }}
-          >
-            {validResults && (
-              <EventsTable
-                eventInfo={validResults}
-                showDetailCard={showDetailCard}
-                setShowDetailCard={setShowDetailCard}
-              />
-            )}
-          </div>
+
+          {validResults && (
+            <EventsTable
+              eventsInfo={validResults}
+              showDetailCard={showDetailCard}
+              setShowDetailCard={setShowDetailCard}
+            />
+          )}
         </div>
       </Layout>
     </>
   );
 };
 
-export default SearchForm;
+export default SearchPage;

@@ -3,3 +3,12 @@ body {
   height: 100%;
   background-image: url('../src/assets/ticketMasterParty.jpeg');
 }
+
+ul.nav.nav-tabs {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 10px;
+  gap: 3rem;
+}

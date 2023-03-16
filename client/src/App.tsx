@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import SearchForm from './pages/SearchForm';
+import SearchForm from './pages/SearchPage';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {

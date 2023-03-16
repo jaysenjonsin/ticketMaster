@@ -9,7 +9,7 @@ const NavBar = () => {
       <Navbar
         bg='dark'
         variant='dark'
-        style={{ top: '0px', position: 'sticky' }}
+        style={{ top: '0px', position: 'sticky', zIndex: '99' }}
       >
         <Container>
           <Nav style={{ marginLeft: 'auto' }}>
