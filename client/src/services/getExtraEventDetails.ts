@@ -1,8 +1,9 @@
 import { API_URL } from '../utils/constants';
 import axios from 'axios';
 
+const URL = API_URL + 'search/extraEventDetails';
 export const getExtraEventDetails = async (id: string) => {
-  const { data } = await axios.get(API_URL + 'extra+event+details', {
+  const { data } = await axios.get(URL, {
     params: {
       id,
     },

@@ -28,17 +28,19 @@ const EventsTab = ({ event }: Props) => {
           <h3>Date</h3>
           <p>{event?.dates.start.localDate}</p>
           <h3>Artists/Team</h3>
-          {/* Add your artist/team content here */}
+          {/* artist/team content here  ?? where are names*/}
           <h3>Venue</h3>
           <p>{event?._embedded.venues[0].name}</p>
           <h3>Genre</h3>
+          {/* "segment", "genre", "subGenre", "type",
+"subType" */}
           <p>{event?.classifications[0].segment.name}</p>
           <h3>Price Ranges</h3>
-          {/* Add your price range content here */}
+          {/* price range content here */}
           <h3>Ticket Status</h3>
-          {/* Add your ticket status content here */}
+          {/* ticket status content here */}
           <h3>Buy Tickets at</h3>
-          {/* Add your buy tickets content here */}
+          {/* buy tickets content here */}
         </Col>
         <Col
           xs={12}

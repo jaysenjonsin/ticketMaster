@@ -52,7 +52,6 @@ const SearchPage = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('FORM SUBMITTED');
     try {
       //later, do if (!autoDetect) functionality - if autoDetect, use current location
       const { latitude, longitude } = await getLatAndLong(location);
@@ -182,7 +181,7 @@ const SearchPage = () => {
                 >
                   <Form.Label>Distance</Form.Label>
                   <Form.Control
-                    type='text'
+                    type='number'
                     placeholder='Enter distance'
                     value={distance}
                     onChange={(e) => setDistance(e.target.value)}
@@ -206,8 +205,8 @@ const SearchPage = () => {
                     <option value='KZFzniwnSyZfZ7v7nJ'>Music</option>
                     <option value='KZFzniwnSyZfZ7v7nE'>Sports</option>
                     <option value='KZFzniwnSyZfZ7v7na'>Arts & Theatre</option>
-                    <option value='KZFzniwnSyZfZ7v7nJQ'>Film</option>
-                    <option value='KZFzniwnSyZfZ7v7nJQ'>Miscellaneous</option>
+                    <option value='KZFzniwnSyZfZ7v7nn'>Film</option>
+                    <option value='KZFzniwnSyZfZ7v7n1'>Miscellaneous</option>
                   </Form.Control>
                 </Form.Group>
               </Row>

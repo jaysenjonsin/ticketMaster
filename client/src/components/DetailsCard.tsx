@@ -31,17 +31,22 @@ const DetailsCard = ({ event, setShowDetailCard }: Props) => {
   }, []);
 
   useEffect(() => {
-    //scroll to bottom of screen when switching tabs so you can see everything on tab
-    window.scrollTo(0, document.body.scrollHeight);
-  }, [currentTab]);
+    fetchExtraDetails(event);
+    console.log('EVENT DETAILS FROM DETAILS CARD: ', extraEventDetails);
+    console.log('VENUE DETAILS FROM DETAILS CARD: ', extraVenueDetails);
+  }, []);
+
+  //scroll to bottom when switching tabs
+  // useEffect(() => {
+  //   window.scrollTo(0, document.body.scrollHeight);
+  // }, [currentTab]);
+
   const back = () => {
+    //scroll to top
     window.scrollTo(0, 0);
     setShowDetailCard(false);
   };
   return (
-    // <>
-    //   (<p style={{ color: 'white' }}>{event?.name}</p>){' '}
-    // </>
     <Card
       style={{
         backgroundColor: 'rgba(120, 120, 120, 0.5)',
@@ -52,11 +57,12 @@ const DetailsCard = ({ event, setShowDetailCard }: Props) => {
       }}
     >
       <Card.Header>
-        <Button variant='primary' onClick={back}>
+        <a onClick={back}>
+          <span className='material-icons'>arrow_back</span>
           Back
-        </Button>
+        </a>
         <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem' }}>
-          <h2>Event name</h2>
+          <h2>{event?.name}</h2>
           <Button
             style={{
               display: 'flex',

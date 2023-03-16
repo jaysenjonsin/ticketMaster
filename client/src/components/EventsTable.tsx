@@ -52,7 +52,10 @@ const EventsTable = ({
                     <img
                       src={event?.images[0].url}
                       alt='event image'
-                      style={{ objectFit: 'cover', width: '10rem' }}
+                      style={{
+                        objectFit: 'cover',
+                        width: '10rem',
+                      }}
                     />
                   </td>
                   <td>{event?.name}</td>

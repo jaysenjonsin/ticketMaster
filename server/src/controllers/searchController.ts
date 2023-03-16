@@ -83,12 +83,28 @@ export const getExtraEventDetails = async (
   res: Response,
   next: NextFunction
 ) => {
-  console.log(req, res, next);
-
+  const { id } = req.query;
   try {
-    const { id } = req.query;
-    console.log(req.query);
-    res.status(200).json(id);
+    const { data } = await axios.get(
+      `https://app.ticketmaster.com/discovery/v2/events/${id}.json?apikey=${process.env.TICKETMASTER_API_KEY}`
+    );
+    res.status(200).json(data);
+  } catch (err: any) {
+    return next(err);
+  }
+};
+
+export const getExtraVenueDetails = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { id } = req.query;
+  try {
+    const { data } = await axios.get(
+      `https://app.ticketmaster.com/discovery/v2/venues.json?id=${id}&apikey=${process.env.TICKETMASTER_API_KEY}`
+    );
+    res.status(200).json(data);
   } catch (err: any) {
     return next(err);
   }
