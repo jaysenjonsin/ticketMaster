@@ -24,8 +24,10 @@ const SearchPage = () => {
 
   const fetchSuggestions = useCallback(async (userInput: string) => {
     try {
-      const suggestions = await autoComplete(userInput);
+      let suggestions = await autoComplete(userInput);
+      if (!suggestions) suggestions = [{ name: 'No results found' }];
       const suggestionsFlattened = flattenSuggestions(suggestions);
+
       //@ts-ignore
       setSuggestions(suggestionsFlattened);
     } catch (err: any) {
@@ -162,6 +164,7 @@ const SearchPage = () => {
                           <option
                             key={idx}
                             value={suggestion?.name}
+                            disabled={suggestion?.name === 'No results found'}
                             onClick={() => setShowSuggestions(false)}
                             style={{ marginBottom: '1rem' }}
                           >
