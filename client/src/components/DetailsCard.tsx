@@ -13,11 +13,13 @@ type Props = {
 };
 
 const DetailsCard = ({ event, setShowDetailCard }: Props) => {
+  //@ts-ignore
+  const isFavorite = JSON.parse(localStorage.getItem(event.id));
+  console.log('IS FAVORITE: ', isFavorite);
   const [currentTab, setCurrentTab] = useState('events');
   const [extraEventDetails, setExtraEventDetails] = useState(null);
   const [extraVenueDetails, setExtraVenueDetails] = useState(null);
   console.log('PROP EVENTTT', event);
-
   useEffect(() => {
     const fetchExtraDetails = async (event: any) => {
       try {
@@ -35,6 +37,26 @@ const DetailsCard = ({ event, setShowDetailCard }: Props) => {
     console.log('EVENT DETAILS FROM DETAILS CARD: ', extraEventDetails);
     console.log('VENUE DETAILS FROM DETAILS CARD: ', extraVenueDetails);
   }, []);
+
+  //  DATE, EVENT, CATEGORY, VENUE
+  const handleFavoriteClick = () => {
+    if (isFavorite) {
+      localStorage.removeItem(event.id);
+      window.alert('Removed from Favorites!');
+    } else {
+      const eventObject = {
+        date: event.dates.start.localDate,
+        event: event.name,
+        category: `${event?.classifications?.[0]?.segment?.name} | ${event?.classifications?.[0]?.genre?.name} | ${event?.classifications?.[0]?.subGenre?.name}`,
+        venue: event._embedded.venues[0].name,
+      };
+      localStorage.setItem(event.id, JSON.stringify(eventObject));
+    }
+  };
+
+  // {event?.classifications?.[0]?.segment?.name} |{' '}
+  // {event?.classifications?.[0]?.genre?.name} |{' '}
+  // {event?.classifications?.[0]?.subGenre?.name}
 
   //scroll to bottom when switching tabs
   // useEffect(() => {
@@ -57,11 +79,27 @@ const DetailsCard = ({ event, setShowDetailCard }: Props) => {
       }}
     >
       <Card.Header>
-        <a onClick={back}>
-          <span className='material-icons'>arrow_back</span>
-          Back
+        <a
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            cursor: 'pointer',
+          }}
+          onClick={back}
+        >
+          <span className='material-icons' style={{ fontSize: '1.2rem' }}>
+            arrow_back_ios_new
+          </span>
+          <span style={{ textDecoration: 'underline' }}> Back</span>
         </a>
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem' }}>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            gap: '1rem',
+            padding: '2.5rem',
+          }}
+        >
           <h2>{event?.name}</h2>
           <Button
             style={{
@@ -74,8 +112,13 @@ const DetailsCard = ({ event, setShowDetailCard }: Props) => {
               color: 'red',
               backgroundColor: 'white',
             }}
+            onClick={handleFavoriteClick}
           >
-            <span className='material-icons'>favorite_border</span>
+            {isFavorite ? (
+              <span className='material-icons'>favorite</span>
+            ) : (
+              <span className='material-icons'>favorite_border</span>
+            )}
           </Button>
         </div>
       </Card.Header>

@@ -32,11 +32,6 @@ const EventsTab = ({ event }: Props) => {
         width: '80%',
       }}
     >
-      {/* <img
-        src={facebook}
-        style={{ width: '2.5rem', backgroundColor: 'red' }}
-        alt=''
-      /> */}
       <Row>
         <Col
           xs={12} //on small screens, take up full column
@@ -131,6 +126,7 @@ const EventsTab = ({ event }: Props) => {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
+          marginTop: '1rem',
         }}
       >
         Share on:
