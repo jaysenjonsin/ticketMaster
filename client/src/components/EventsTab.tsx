@@ -3,6 +3,7 @@ import { Container, Col, Row } from 'react-bootstrap';
 import { checkTicketStatus } from '../utils/checkTicketStatus';
 import facebook from '../assets/transparentFacebook.png';
 import twitter from '../assets/twitter.png';
+import moment from 'moment';
 type Props = {
   event: any;
 };
@@ -47,6 +48,10 @@ const EventsTab = ({ event }: Props) => {
         >
           <h3>Date</h3>
           <p>{event?.dates?.start?.localDate}</p>
+          <p>
+            {moment(event?.dates.start.localTime, 'HH:mm').format('h:mm A')}{' '}
+            local time ({event?.dates.timezone.replace('_', ' ')})
+          </p>
           <h3>Artists/Team</h3>
           {/* all artists/team in one paragraph, then map actual items as spans. dont create p for each one as they will stack on top of eachother instead of inline */}
           <p>
@@ -82,7 +87,6 @@ const EventsTab = ({ event }: Props) => {
             )}
           </p>
           <h3>Ticket Status</h3>
-          {/* ticket status content here */}
           <p
             style={{
               backgroundColor: `${

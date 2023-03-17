@@ -14,11 +14,13 @@ type Props = {
 
 const DetailsCard = ({ event, setShowDetailCard }: Props) => {
   //@ts-ignore
-  const isFavorite = JSON.parse(localStorage.getItem(event.id));
-  console.log('IS FAVORITE: ', isFavorite);
   const [currentTab, setCurrentTab] = useState('events');
   const [extraEventDetails, setExtraEventDetails] = useState(null);
   const [extraVenueDetails, setExtraVenueDetails] = useState(null);
+  const [isFavorite, setIsFavorite] = useState(
+    //@ts-ignore
+    JSON.parse(localStorage.getItem(event.id))
+  );
   console.log('PROP EVENTTT', event);
   useEffect(() => {
     const fetchExtraDetails = async (event: any) => {
@@ -38,10 +40,10 @@ const DetailsCard = ({ event, setShowDetailCard }: Props) => {
     console.log('VENUE DETAILS FROM DETAILS CARD: ', extraVenueDetails);
   }, []);
 
-  //  DATE, EVENT, CATEGORY, VENUE
   const handleFavoriteClick = () => {
     if (isFavorite) {
       localStorage.removeItem(event.id);
+      setIsFavorite(null);
       window.alert('Removed from Favorites!');
     } else {
       const eventObject = {
@@ -51,6 +53,9 @@ const DetailsCard = ({ event, setShowDetailCard }: Props) => {
         venue: event._embedded.venues[0].name,
       };
       localStorage.setItem(event.id, JSON.stringify(eventObject));
+      setIsFavorite(true);
+      console.log('EVENT OBJECT ', eventObject)
+      window.alert('Added Event to Favorites!');
     }
   };
 
