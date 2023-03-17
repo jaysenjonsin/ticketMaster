@@ -1,20 +1,42 @@
 import React from 'react';
 import { Container, Col, Row } from 'react-bootstrap';
 import { checkTicketStatus } from '../utils/checkTicketStatus';
-
+import facebook from '../assets/transparentFacebook.png';
+import twitter from '../assets/twitter.png';
 type Props = {
   event: any;
 };
 
 const EventsTab = ({ event }: Props) => {
   const attractionNames = event?._embedded?.attractions;
-  console.log('ATTRACTION NAMES: ', attractionNames);
+
+  //window.open(url, <where to open link>) : _blank = new tab _self = same tab
+  const handleTweet = () => {
+    const tweetText = `Check out ${event.name} on TicketMaster!`;
+    const tweetUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
+      tweetText
+    )}&url=${encodeURIComponent(event.url)}`;
+    window.open(tweetUrl, '_blank');
+  };
+
+  const handleFacebookPost = () => {
+    const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+      event.url
+    )}`;
+    window.open(facebookUrl, '_blank');
+  };
+
   return (
     <Container
       style={{
         width: '80%',
       }}
     >
+      {/* <img
+        src={facebook}
+        style={{ width: '2.5rem', backgroundColor: 'red' }}
+        alt=''
+      /> */}
       <Row>
         <Col
           xs={12} //on small screens, take up full column
@@ -101,6 +123,41 @@ const EventsTab = ({ event }: Props) => {
             }}
           />
         </Col>
+      </Row>
+      <Row
+        s={12}
+        m={12}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        Share on:
+        <img
+          src={twitter}
+          style={{
+            objectFit: 'cover',
+            width: '3rem',
+            height: '2rem',
+            backgroundColor: 'transparent',
+            cursor: 'pointer',
+          }}
+          alt='twitter'
+          onClick={handleTweet}
+        />
+        <img
+          src={facebook}
+          style={{
+            objectFit: 'cover',
+            width: '3rem',
+            height: '2rem',
+            backgroundColor: 'transparent',
+            cursor: 'pointer',
+          }}
+          alt='facebook'
+          onClick={handleFacebookPost}
+        />
       </Row>
     </Container>
   );
