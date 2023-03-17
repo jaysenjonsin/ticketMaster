@@ -71,6 +71,7 @@ const SearchPage = () => {
       if (searchResults._embedded) {
         //cannot set results directly to searchResults._embedded.events here, possibly due to async nature of setState
         setValidResults(searchResults);
+        setShowDetailCard(false);
       }
     } catch (err: any) {
       const message = err?.response.data.message ?? err.toString();
@@ -91,6 +92,7 @@ const SearchPage = () => {
     <>
       <Layout>
         <div
+          className='mainContainer'
           style={{
             display: 'flex',
             flexDirection: 'column',
@@ -176,7 +178,7 @@ const SearchPage = () => {
                   </div>
                 </Form.Group>
               </Row>
-              <Row>
+              <Row className='flex-wrap'>
                 <Form.Group
                   as={Col}
                   controlId='formDistance'

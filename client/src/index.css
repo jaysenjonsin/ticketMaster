@@ -18,6 +18,12 @@ ul.nav.nav-tabs {
   }
 }
 
+@media (max-width: 768px) {
+  .mainContainer {
+    align-items: left;
+  }
+}
+
 .nav-link {
   color: white;
 }

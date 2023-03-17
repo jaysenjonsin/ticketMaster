@@ -26,17 +26,33 @@ const EventsTab = ({ event }: Props) => {
           }}
         >
           <h3>Date</h3>
-          <p>{event?.dates.start.localDate}</p>
+          <p>{event?.dates?.start?.localDate}</p>
           <h3>Artists/Team</h3>
-          {/* artist/team content here  ?? where are names*/}
+          {/* artist/team content here  ?? where are names --> Map through _embedded.attractions array*/}
           <h3>Venue</h3>
-          <p>{event?._embedded.venues[0].name}</p>
+          <p>{event?._embedded.venues[0]?.name ?? 'Unknown Venue'}</p>
           <h3>Genre</h3>
           {/* "segment", "genre", "subGenre", "type",
 "subType" */}
-          <p>{event?.classifications[0].segment.name}</p>
+          <p>
+            {event?.classifications[0]?.segment?.name} |{' '}
+            {event?.classifications[0]?.genre?.name} |{' '}
+            {event?.classifications[0]?.subGenre?.name} | {event?.type}
+          </p>
           <h3>Price Ranges</h3>
           {/* price range content here */}
+          <p>
+            {/* NOTE: If using option chaining with bracket notation, do it like array?.[index]?., not like array[index]?. example below*/}
+            {event?.priceRanges ? (
+              <>
+                ${event?.priceRanges?.[0]?.min ?? 'no prices available'}- $
+                {event?.priceRanges?.[0]?.max ?? 'no prices available'}{' '}
+              </>
+            ) : (
+              'No prices available'
+            )}
+            {event?.priceRanges?.[0]?.min ?? 'no prices available'}
+          </p>
           <h3>Ticket Status</h3>
           {/* ticket status content here */}
           <h3>Buy Tickets at</h3>

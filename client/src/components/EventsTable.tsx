@@ -27,7 +27,6 @@ const EventsTable = ({
         <div
           style={{
             width: '80%',
-            minWidth: '30rem',
           }}
         >
           <Table striped bordered hover variant='dark'>
@@ -60,7 +59,10 @@ const EventsTable = ({
                   </td>
                   <td>{event?.name}</td>
                   <td>{event?.classifications[0].segment.name}</td>
-                  <td>{event?._embedded.venues[0].name}</td>
+                  <td>
+                    {event?._embedded.venues[0].name} <br /> ({event?.distance}{' '}
+                    mi)
+                  </td>
                 </tr>
               ))}
             </tbody>

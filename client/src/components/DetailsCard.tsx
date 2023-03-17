@@ -18,19 +18,19 @@ const DetailsCard = ({ event, setShowDetailCard }: Props) => {
   const [extraVenueDetails, setExtraVenueDetails] = useState(null);
   console.log('PROP EVENTTT', event);
 
-  const fetchExtraDetails = useCallback(async (event: any) => {
-    try {
-      const eventDetails = await getExtraEventDetails(event?.id);
-      const venueDetails = await getExtraVenueDetails(event?.id);
-      setExtraEventDetails(eventDetails);
-      setExtraVenueDetails(venueDetails);
-    } catch (err: any) {
-      const response = err.response?.data.message ?? err.toString();
-      window.alert(response);
-    }
-  }, []);
-
   useEffect(() => {
+    const fetchExtraDetails = async (event: any) => {
+      try {
+        const eventDetails = await getExtraEventDetails(event?.id);
+        const venueDetails = await getExtraVenueDetails(event?.id);
+        setExtraEventDetails(eventDetails);
+        setExtraVenueDetails(venueDetails);
+      } catch (err: any) {
+        const response = err.response?.data.message ?? err.toString();
+        window.alert(response);
+      }
+    };
+
     fetchExtraDetails(event);
     console.log('EVENT DETAILS FROM DETAILS CARD: ', extraEventDetails);
     console.log('VENUE DETAILS FROM DETAILS CARD: ', extraVenueDetails);
