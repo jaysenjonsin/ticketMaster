@@ -3,7 +3,6 @@ import { Card, Button, Tabs, Tab, Container } from 'react-bootstrap';
 import ArtistsTab from './ArtistsTab';
 import EventsTab from './EventsTab';
 import VenueTab from './VenueTab';
-import favoriteBorder from '../assets/favorite_border.png';
 import { getExtraEventDetails } from '../services/getExtraEventDetails';
 import { getExtraVenueDetails } from '../services/getExtraVenueDetails';
 
@@ -18,8 +17,7 @@ const DetailsCard = ({ event, setShowDetailCard }: Props) => {
   const [extraEventDetails, setExtraEventDetails] = useState(null);
   const [extraVenueDetails, setExtraVenueDetails] = useState(null);
   const [isFavorite, setIsFavorite] = useState(
-    //@ts-ignore
-    JSON.parse(localStorage.getItem(event.id))
+    JSON.parse(localStorage.getItem(event.id) as string) //use this state to either render favorite or not favorited button
   );
   console.log('PROP EVENTTT', event);
   useEffect(() => {
@@ -54,7 +52,7 @@ const DetailsCard = ({ event, setShowDetailCard }: Props) => {
       };
       localStorage.setItem(event.id, JSON.stringify(eventObject));
       setIsFavorite(true);
-      console.log('EVENT OBJECT ', eventObject)
+      console.log('EVENT OBJECT ', eventObject);
       window.alert('Added Event to Favorites!');
     }
   };

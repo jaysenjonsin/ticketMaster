@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { Request, Response, NextFunction } from 'express';
+import { spotifyApi } from '../utils/createSpotifyAPI';
 
 export const searchEvent = async (
   req: Request,
@@ -107,5 +108,20 @@ export const getExtraVenueDetails = async (
     res.status(200).json(data);
   } catch (err: any) {
     return next(err);
+  }
+};
+
+export const getSpotifyData = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  console.log(req, res, next);
+  try {
+    const { body } = await spotifyApi.searchArtists('hello');
+    console.log('BODY: ', body);
+    res.status(200).json(body);
+  } catch (err: any) {
+    return next(next);
   }
 };
