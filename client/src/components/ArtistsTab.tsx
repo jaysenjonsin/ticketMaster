@@ -34,7 +34,9 @@ const ArtistsTab = ({ extraArtistDetails: artists }: Props) => {
                           width: '10rem',
                         }}
                       />
-                      <h2 style={{ color: '#32c9a6' }}>{artist.name}</h2>
+                      <h2 style={{ color: '#32c9a6', textAlign: 'center' }}>
+                        {artist.name}
+                      </h2>
                     </div>
                   </Col>
                   <Col xs={12} md={3}>
@@ -69,11 +71,16 @@ const ArtistsTab = ({ extraArtistDetails: artists }: Props) => {
                   </Col>
                 </Row>
 
-                <Row className='justify-content-center mt-4 mt-md-5'>
+                <Row className=' mt-4 mt-md-5'>
                   <Col xs={12} md={4} className='text-center'>
                     <h4 style={{ color: '#32c9a6' }}>
                       Albums featuring {artist.name}
                     </h4>
+                  </Col>
+                </Row>
+                <Row className='justify-content-center mt-4 mt-md-5'>
+                  <Col xs={12} md={4} className='text-center'>
+                    <h4 style={{ color: '#32c9a6' }}>Albums here</h4>
                   </Col>
                 </Row>
               </Carousel.Item>

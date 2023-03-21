@@ -25,8 +25,12 @@ const DetailsCard = ({ event, setShowDetailCard }: Props) => {
   useEffect(() => {
     const fetchExtraDetails = async (event: any) => {
       try {
+        console.log('HELLA EVENT: ', event);
+        // console.log('big bones ', event?._embedded?.venues )
         const eventDetails = await getExtraEventDetails(event?.id);
-        const venueDetails = await getExtraVenueDetails(event?.id);
+        const venueDetails = await getExtraVenueDetails(
+          event?._embedded?.venues?.[0]?.id
+        );
         // const spotifyData = await getSpotifyData(
         //   event._embedded.attractions[0].name
         // );
@@ -36,7 +40,6 @@ const DetailsCard = ({ event, setShowDetailCard }: Props) => {
         );
         if (arrOfEventArtists.length === 0) {
         } else setExtraArtistDetails(arrOfEventArtists);
-        console.log('ARTISTS BBOOYAH: ', arrOfEventArtists);
         // let firstArtistResult = spotifyData?.artists?.items;
 
         // if first artist doesnt match attraction name, assume event is not a musical event and leave extraArtistDetails as null
@@ -74,7 +77,6 @@ const DetailsCard = ({ event, setShowDetailCard }: Props) => {
       };
       localStorage.setItem(event.id, JSON.stringify(eventObject));
       setIsFavorite(true);
-      console.log('EVENT OBJECT ', eventObject);
       window.alert('Added Event to Favorites!');
     }
   };
@@ -163,7 +165,7 @@ const DetailsCard = ({ event, setShowDetailCard }: Props) => {
             <ArtistsTab extraArtistDetails={extraArtistDetails} />
           </Tab>
           <Tab eventKey='venue' title='Venue' style={{ color: 'white' }}>
-            <VenueTab />
+            <VenueTab extraVenueDetails={extraVenueDetails} />
           </Tab>
         </Tabs>
       </Card.Body>
