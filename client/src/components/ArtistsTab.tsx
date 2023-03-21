@@ -12,8 +12,11 @@ const ArtistsTab = ({ extraArtistDetails: artist }: Props) => {
     <>
       {artist ? (
         <Container style={{ width: '90%', padding: '1rem' }}>
+          {/* on med screens and above, align items at start instead of center */}
           <Row className='align-items-center justify-content-center justify-content-md-start'>
+            {/* md = 3 because there are 4 items, so each should take 3/12 space */}
             <Col xs={12} md={3}>
+              {/* for each item, align el's along cross axis */}
               <div className='d-flex flex-column align-items-center'>
                 <img
                   src={artist.images[0].url}
@@ -29,7 +32,7 @@ const ArtistsTab = ({ extraArtistDetails: artist }: Props) => {
               </div>
             </Col>
             <Col xs={12} md={3}>
-              <div className='d-flex flex-column align-items-center'>
+              <div className='d-flex flex-column align-items-center '>
                 <h3 style={{ color: '#32c9a6' }}>Popularity</h3>
                 <p>{artist.popularity}</p>
               </div>
@@ -45,8 +48,8 @@ const ArtistsTab = ({ extraArtistDetails: artist }: Props) => {
                 <h4 style={{ color: '#32c9a6' }}>Spotify Link</h4>
                 <a
                   href={artist.external_urls.spotify}
-                  target='_blank'
-                  rel='noreferrer'
+                  target='_blank' //open link in new tab
+                  rel='noreferrer' //prevents newly opened page from accessing opener window  by removing Referer HTTP header from the request
                 >
                   <Icon icon='mdi:spotify' color='#1db954' width='50' />
                 </a>
