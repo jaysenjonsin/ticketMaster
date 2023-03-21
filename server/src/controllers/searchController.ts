@@ -102,6 +102,7 @@ export const getExtraVenueDetails = async (
 ) => {
   const { id } = req.query;
   try {
+    console.log('ACCESS TOKEN: ', spotifyApi.getAccessToken());
     const { data } = await axios.get(
       `https://app.ticketmaster.com/discovery/v2/venues.json?id=${id}&apikey=${process.env.TICKETMASTER_API_KEY}`
     );
@@ -111,6 +112,20 @@ export const getExtraVenueDetails = async (
   }
 };
 
+export const refreshSpotifyCredentials = (_: Request, res: Response) => {
+  spotifyApi.clientCredentialsGrant().then(
+    (data) => {
+      // Save the access token so that it's used in future calls
+      spotifyApi.setAccessToken(data.body['access_token']);
+    },
+    (err) => {
+      console.log('Something went wrong when retrieving an access token', err);
+    }
+  );
+  res.status(200).json({ message: 'spotify credentials refreshed' });
+};
+
+// using client credential flow, so access token cannot be refreshed
 export const getSpotifyData = async (
   req: Request,
   res: Response,

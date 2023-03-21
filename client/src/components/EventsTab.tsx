@@ -47,7 +47,7 @@ const EventsTab = ({ event }: Props) => {
         >
           <h3>Date</h3>
           <p>{event?.dates?.start?.localDate}</p>
-          <p>
+          <p style={{ textAlign: 'center' }}>
             {moment(event?.dates.start.localTime, 'HH:mm').format('h:mm A')}{' '}
             local time
             {event?.dates.timezone && (

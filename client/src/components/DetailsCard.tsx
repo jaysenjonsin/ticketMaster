@@ -6,6 +6,7 @@ import VenueTab from './VenueTab';
 import { getExtraEventDetails } from '../services/getExtraEventDetails';
 import { getExtraVenueDetails } from '../services/getExtraVenueDetails';
 import { getSpotifyData } from '../services/getSpotifyData';
+import { getRelevantArtists } from '../utils/getRelevantArtists';
 
 type Props = {
   event: any;
@@ -27,9 +28,13 @@ const DetailsCard = ({ event, setShowDetailCard }: Props) => {
         const eventDetails = await getExtraEventDetails(event?.id);
         const venueDetails = await getExtraVenueDetails(event?.id);
         const spotifyData = await getSpotifyData(
-          event?._embedded.attractions[0].name
+          event._embedded.attractions[0].name
         );
-        console.log('OH YEAHHH', spotifyData);
+        const arrOfEventArtists: any = await getRelevantArtists(
+          event._embedded.attractions,
+          event
+        );
+        console.log('ARTISTS BBOOYAH: ', arrOfEventArtists);
         let firstArtistResult = spotifyData?.artists?.items;
 
         //if first artist doesnt match attraction name, assume event is not a musical event and leave extraArtistDetails as null

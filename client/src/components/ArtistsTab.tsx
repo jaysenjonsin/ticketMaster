@@ -1,6 +1,8 @@
 import React from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import { Icon } from '@iconify/react';
+import { CircularProgressbar } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
 
 type Props = {
   extraArtistDetails: any;
@@ -34,13 +36,19 @@ const ArtistsTab = ({ extraArtistDetails: artist }: Props) => {
             <Col xs={12} md={3}>
               <div className='d-flex flex-column align-items-center '>
                 <h3 style={{ color: '#32c9a6' }}>Popularity</h3>
-                <p>{artist.popularity}</p>
+                <div style={{ width: '4.5rem' }}>
+                  <CircularProgressbar
+                    value={artist.popularity}
+                    text={`${artist.popularity}`}
+                  />
+                </div>
               </div>
             </Col>
             <Col xs={12} md={3}>
               <div className='d-flex flex-column align-items-center'>
                 <h3 style={{ color: '#32c9a6' }}>Followers</h3>
-                <p>{artist.followers.total}</p>
+                {/* toLocaleString: adds the commas to the number */}
+                <p>{artist.followers.total.toLocaleString()}</p>
               </div>
             </Col>
             <Col xs={12} md={3}>
