@@ -55,6 +55,7 @@ const DetailsCard = ({ event, setShowDetailCard }: Props) => {
     };
 
     fetchExtraDetails(event);
+    console.log('EVENT: ', event);
     console.log('EVENT DETAILS FROM DETAILS CARD: ', extraEventDetails);
     console.log('VENUE DETAILS FROM DETAILS CARD: ', extraVenueDetails);
   }, []);
