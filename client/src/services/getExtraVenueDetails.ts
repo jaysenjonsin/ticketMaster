@@ -8,6 +8,6 @@ export const getExtraVenueDetails = async (id: string) => {
     },
   });
 
-  console.log('DATA FROM X VENUE DETAILS: ', data);
+  // console.log('DATA FROM X VENUE DETAILS: ', data);
   return data;
 };

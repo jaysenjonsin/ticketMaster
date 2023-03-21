@@ -27,22 +27,24 @@ const DetailsCard = ({ event, setShowDetailCard }: Props) => {
       try {
         const eventDetails = await getExtraEventDetails(event?.id);
         const venueDetails = await getExtraVenueDetails(event?.id);
-        const spotifyData = await getSpotifyData(
-          event._embedded.attractions[0].name
-        );
+        // const spotifyData = await getSpotifyData(
+        //   event._embedded.attractions[0].name
+        // );
         const arrOfEventArtists: any = await getRelevantArtists(
           event._embedded.attractions,
           event
         );
+        if (arrOfEventArtists.length === 0) {
+        } else setExtraArtistDetails(arrOfEventArtists);
         console.log('ARTISTS BBOOYAH: ', arrOfEventArtists);
-        let firstArtistResult = spotifyData?.artists?.items;
+        // let firstArtistResult = spotifyData?.artists?.items;
 
-        //if first artist doesnt match attraction name, assume event is not a musical event and leave extraArtistDetails as null
-        if (
-          firstArtistResult[0].name.toLowerCase() !==
-          event._embedded.attractions[0].name.toLowerCase()
-        ) {
-        } else setExtraArtistDetails(firstArtistResult[0]);
+        // if first artist doesnt match attraction name, assume event is not a musical event and leave extraArtistDetails as null
+        // if (
+        //   firstArtistResult[0].name.toLowerCase() !==
+        //   event._embedded.attractions[0].name.toLowerCase()
+        // ) {
+        // } else setExtraArtistDetails(firstArtistResult[0]);
 
         setExtraEventDetails(eventDetails);
         setExtraVenueDetails(venueDetails);
