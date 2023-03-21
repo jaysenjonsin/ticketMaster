@@ -14,7 +14,6 @@ const EventsTable = ({
 }: Props) => {
   const arrOfSearchResults = eventsInfo?._embedded.events;
   const [selectedEvent, setSelectedEvent] = useState(null);
-  console.log('ARRAY: ', arrOfSearchResults);
 
   const selectEvent = (event: any) => {
     setShowDetailCard(true);

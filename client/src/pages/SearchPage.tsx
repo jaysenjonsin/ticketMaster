@@ -100,6 +100,8 @@ const SearchPage = () => {
             gap: '3rem',
             alignItems: 'center',
             justifyContent: 'center',
+            // add some extra space to bottom of the page
+            paddingBottom: '10rem',
           }}
         >
           <Container

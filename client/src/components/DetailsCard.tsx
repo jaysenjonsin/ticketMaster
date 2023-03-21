@@ -5,6 +5,7 @@ import EventsTab from './EventsTab';
 import VenueTab from './VenueTab';
 import { getExtraEventDetails } from '../services/getExtraEventDetails';
 import { getExtraVenueDetails } from '../services/getExtraVenueDetails';
+import { getSpotifyData } from '../services/getSpotifyData';
 
 type Props = {
   event: any;
@@ -16,15 +17,28 @@ const DetailsCard = ({ event, setShowDetailCard }: Props) => {
   const [currentTab, setCurrentTab] = useState('events');
   const [extraEventDetails, setExtraEventDetails] = useState(null);
   const [extraVenueDetails, setExtraVenueDetails] = useState(null);
+  const [extraArtistDetails, setExtraArtistDetails] = useState(null);
   const [isFavorite, setIsFavorite] = useState(
     JSON.parse(localStorage.getItem(event.id) as string) //use this state to either render favorite or not favorited button
   );
-  console.log('PROP EVENTTT', event);
   useEffect(() => {
     const fetchExtraDetails = async (event: any) => {
       try {
         const eventDetails = await getExtraEventDetails(event?.id);
         const venueDetails = await getExtraVenueDetails(event?.id);
+        const spotifyData = await getSpotifyData(
+          event?._embedded.attractions[0].name
+        );
+        console.log('OH YEAHHH', spotifyData);
+        let firstArtistResult = spotifyData?.artists?.items;
+
+        //if first artist doesnt match attraction name, assume event is not a musical event and leave extraArtistDetails as null
+        if (
+          firstArtistResult[0].name.toLowerCase() !==
+          event._embedded.attractions[0].name.toLowerCase()
+        ) {
+        } else setExtraArtistDetails(firstArtistResult[0]);
+
         setExtraEventDetails(eventDetails);
         setExtraVenueDetails(venueDetails);
       } catch (err: any) {
@@ -57,10 +71,6 @@ const DetailsCard = ({ event, setShowDetailCard }: Props) => {
     }
   };
 
-  // {event?.classifications?.[0]?.segment?.name} |{' '}
-  // {event?.classifications?.[0]?.genre?.name} |{' '}
-  // {event?.classifications?.[0]?.subGenre?.name}
-
   //scroll to bottom when switching tabs
   // useEffect(() => {
   //   window.scrollTo(0, document.body.scrollHeight);
@@ -76,9 +86,10 @@ const DetailsCard = ({ event, setShowDetailCard }: Props) => {
       style={{
         backgroundColor: 'rgba(120, 120, 120, 0.5)',
         backdropFilter: 'blur(6px)',
-        borderRadius: '25px',
         color: 'white',
         width: '85%',
+        maxWidth: '900px',
+        minHeight: '35rem',
       }}
     >
       <Card.Header>
@@ -141,7 +152,7 @@ const DetailsCard = ({ event, setShowDetailCard }: Props) => {
             title='Artists/Teams'
             style={{ color: 'white' }}
           >
-            <ArtistsTab />
+            <ArtistsTab extraArtistDetails={extraArtistDetails} />
           </Tab>
           <Tab eventKey='venue' title='Venue' style={{ color: 'white' }}>
             <VenueTab />

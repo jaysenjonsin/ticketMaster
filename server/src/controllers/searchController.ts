@@ -116,12 +116,12 @@ export const getSpotifyData = async (
   res: Response,
   next: NextFunction
 ) => {
-  console.log(req, res, next);
   try {
-    const { body } = await spotifyApi.searchArtists('hello');
-    console.log('BODY: ', body);
+    const { keyword } = req.query;
+    //@ts-ignore
+    const { body } = await spotifyApi.searchArtists(keyword);
     res.status(200).json(body);
   } catch (err: any) {
-    return next(next);
+    return next(err);
   }
 };

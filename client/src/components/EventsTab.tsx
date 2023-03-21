@@ -10,7 +10,6 @@ type Props = {
 
 const EventsTab = ({ event }: Props) => {
   const attractionNames = event?._embedded?.attractions;
-
   //window.open(url, <where to open link>) : _blank = new tab _self = same tab
   const handleTweet = () => {
     const tweetText = `Check out ${event.name} on TicketMaster!`;
@@ -50,7 +49,10 @@ const EventsTab = ({ event }: Props) => {
           <p>{event?.dates?.start?.localDate}</p>
           <p>
             {moment(event?.dates.start.localTime, 'HH:mm').format('h:mm A')}{' '}
-            local time ({event?.dates.timezone.replace('_', ' ')})
+            local time
+            {event?.dates.timezone && (
+              <span>({event?.dates.timezone.replace('_', ' ')})</span>
+            )}
           </p>
           <h3>Artists/Team</h3>
           {/* all artists/team in one paragraph, then map actual items as spans. dont create p for each one as they will stack on top of eachother instead of inline */}
