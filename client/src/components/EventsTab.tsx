@@ -10,18 +10,19 @@ type Props = {
 
 const EventsTab = ({ event }: Props) => {
   const attractionNames = event?._embedded?.attractions;
+  console.log('NERF THIS ', attractionNames);
   //window.open(url, <where to open link>) : _blank = new tab _self = same tab
   const handleTweet = () => {
-    const tweetText = `Check out ${event.name} on TicketMaster!`;
+    const tweetText = `Check out ${event?.name} on TicketMaster!`;
     const tweetUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
       tweetText
-    )}&url=${encodeURIComponent(event.url)}`;
+    )}&url=${encodeURIComponent(event?.url)}`;
     window.open(tweetUrl, '_blank');
   };
 
   const handleFacebookPost = () => {
     const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
-      event.url
+      event?.url
     )}`;
     window.open(facebookUrl, '_blank');
   };
@@ -57,7 +58,7 @@ const EventsTab = ({ event }: Props) => {
           <h3>Artists/Team</h3>
           {/* all artists/team in one paragraph, then map actual items as spans. dont create p for each one as they will stack on top of eachother instead of inline */}
           <p>
-            {attractionNames.map((attraction: any, idx: number) => (
+            {attractionNames?.map((attraction: any, idx: number) => (
               //just use span so everything can have key
               <span key={idx}>
                 {attraction.name}
@@ -92,16 +93,16 @@ const EventsTab = ({ event }: Props) => {
           <p
             style={{
               backgroundColor: `${
-                checkTicketStatus(event.dates.status.code).backgroundColor
+                checkTicketStatus(event?.dates.status.code).backgroundColor
               }`,
               padding: '.25rem',
               borderRadius: '5px',
             }}
           >
-            {checkTicketStatus(event.dates.status.code).text}
+            {checkTicketStatus(event?.dates.status.code).text}
           </p>
           <h3>Buy Tickets at</h3>
-          <a href={event.url}>Ticketmaster</a> {/* buy tickets content here */}
+          <a href={event?.url}>Ticketmaster</a> {/* buy tickets content here */}
         </Col>
         <Col
           xs={12}
@@ -114,7 +115,7 @@ const EventsTab = ({ event }: Props) => {
           }}
         >
           <img
-            src={event.seatmap?.staticUrl}
+            src={event?.seatmap.staticUrl}
             alt='event venue'
             style={{
               objectFit: 'cover',

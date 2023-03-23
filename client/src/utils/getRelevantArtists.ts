@@ -1,4 +1,4 @@
-import { getSpotifyData } from '../services/getSpotifyData';
+import { getArtistData } from '../services/getArtistData';
 
 export const getRelevantArtists = async (
   arrOfArtists: Array<any>,
@@ -6,7 +6,11 @@ export const getRelevantArtists = async (
 ) => {
   const validResults = [];
   for (let i = 0; i < arrOfArtists.length; i++) {
-    const listOfArtists = await getSpotifyData(arrOfArtists[i].name);
+    //check if curr attraction is music related
+    if (arrOfArtists[i].classifications[0].segment.name !== 'Music') {
+      continue;
+    }
+    const listOfArtists = await getArtistData(arrOfArtists[i].name);
     console.log('LIST OF ARTISTS: ', listOfArtists);
     if (
       listOfArtists.artists.items[0].name.toLowerCase() ===

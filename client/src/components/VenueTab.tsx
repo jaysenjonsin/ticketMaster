@@ -9,6 +9,8 @@ const VenueTab = ({ extraVenueDetails: venue }: Props) => {
   // console.log('EXTRA VEN DETAIL ON G ', extraVenueDetails);
   // const venue = extraVenueDetails?._embedded.venues[0];
   // console.log('VENUE EXTRAA AYO' + venue.name);
+
+  // THIS ACTUALLY EXISTS FOR SOME SO CONDITIONALLY RENDER IT
   console.log('extra venue stuff ', venue?.boxOfficeInfo);
   return (
     <Container

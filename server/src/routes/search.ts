@@ -5,8 +5,9 @@ import {
   getLocation,
   getExtraEventDetails,
   getExtraVenueDetails,
-  getSpotifyData,
+  getArtistData,
   refreshSpotifyCredentials,
+  getTopThreeAlbums,
 } from '../controllers/searchController';
 const router = express.Router();
 
@@ -15,7 +16,8 @@ router.route('/autocomplete').get(autoComplete);
 router.get('/getlocation', getLocation);
 router.get('/extraEventDetails', getExtraEventDetails);
 router.get('/extraVenueDetails', getExtraVenueDetails);
-router.get('/spotify', getSpotifyData);
+router.get('/spotify', getArtistData);
 router.get('/spotify/refresh', refreshSpotifyCredentials);
+router.get('/albums', getTopThreeAlbums)
 
 export default router;

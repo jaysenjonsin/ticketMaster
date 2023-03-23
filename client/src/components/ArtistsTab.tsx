@@ -7,17 +7,19 @@ import 'react-circular-progressbar/dist/styles.css';
 
 type Props = {
   extraArtistDetails: any;
+  albums: any; //ARRAY OF ARRAY OF ALBUM URLS
 };
 
-const ArtistsTab = ({ extraArtistDetails: artists }: Props) => {
-  console.log('ARTISTS ARTIST TAB: ', artists);
+const ArtistsTab = ({ extraArtistDetails: artists, albums }: Props) => {
+  console.log('ALBUM GANG SHI ', albums);
+  console.log('ARTISTS GANG SHI ', artists);
   return (
     <>
       {artists && artists.length > 0 ? (
         <Container style={{ width: '90%', padding: '1rem' }}>
           {/* indicators: gets rid of bottom indicators. interval: turns off auto switching items */}
           <Carousel indicators={false} interval={null}>
-            {artists.map((artist: any) => (
+            {artists.map((artist: any, idx: number) => (
               <Carousel.Item key={artist.id}>
                 <Row className='align-items-center justify-content-center justify-content-md-start'>
                   {/* md = 3 because there are 4 items, so each should take 3/12 space */}
@@ -30,8 +32,8 @@ const ArtistsTab = ({ extraArtistDetails: artists }: Props) => {
                         style={{
                           objectFit: 'cover',
                           borderRadius: '400px',
-                          height: '10rem',
-                          width: '10rem',
+                          height: '8.2rem',
+                          width: '8.2rem',
                         }}
                       />
                       <h2 style={{ color: '#32c9a6', textAlign: 'center' }}>
@@ -71,17 +73,34 @@ const ArtistsTab = ({ extraArtistDetails: artists }: Props) => {
                   </Col>
                 </Row>
 
-                <Row className=' mt-4 mt-md-5'>
-                  <Col xs={12} md={4} className='text-center'>
-                    <h4 style={{ color: '#32c9a6' }}>
-                      Albums featuring {artist.name}
-                    </h4>
-                  </Col>
-                </Row>
-                <Row className='justify-content-center mt-4 mt-md-5'>
-                  <Col xs={12} md={4} className='text-center'>
-                    <h4 style={{ color: '#32c9a6' }}>Albums here</h4>
-                  </Col>
+                <Row className='mt-4 mt-md-5 align-items-center justify-content-center justify-content-md-start'>
+                  <h4 style={{ color: '#32c9a6', textAlign: 'center' }}>
+                    Albums featuring {artist.name}
+                  </h4>
+                  <div className='d-flex flex-wrap justify-content-center'>
+                    {albums[idx]?.map((albumUrl: any, index: number) => {
+                      console.log('ALBUM URLS: ', albumUrl);
+                      return (
+                        <Col xs={12} md={4}>
+                          <div
+                            key={index}
+                            className='p-1 d-flex align-items-center justify-content-center'
+                          >
+                            <a href={albumUrl} target='_blank' rel='noreferrer'>
+                              <img
+                                src={albumUrl}
+                                alt='album cover'
+                                style={{
+                                  width: '9rem',
+                                }}
+                                // className='img-fluid'
+                              />
+                            </a>
+                          </div>
+                        </Col>
+                      );
+                    })}
+                  </div>
                 </Row>
               </Carousel.Item>
             ))}
@@ -115,3 +134,10 @@ const ArtistsTab = ({ extraArtistDetails: artists }: Props) => {
 };
 
 export default ArtistsTab;
+
+/*
+[ [URL, URL, uRL ], [URL, URL, uRL ], [URL, URL, uRL ] ]
+
+image, image, image
+
+*/

@@ -105,7 +105,6 @@ export const getExtraVenueDetails = async (
     const { data } = await axios.get(
       `https://app.ticketmaster.com/discovery/v2/venues/${name}.json?apikey=${process.env.TICKETMASTER_API_KEY}`
     );
-    console.log('EXTRA VENUE DATA RIGHT ??', data);
     res.status(200).json(data);
   } catch (err: any) {
     return next(err);
@@ -113,7 +112,7 @@ export const getExtraVenueDetails = async (
 };
 
 // using client credential flow, so access token cannot be refreshed. Just have to call this when token runs out
-export const getSpotifyData = async (
+export const getArtistData = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -139,4 +138,23 @@ export const refreshSpotifyCredentials = (_: Request, res: Response) => {
     }
   );
   res.status(200).json({ message: 'spotify credentials refreshed' });
+};
+
+export const getTopThreeAlbums = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { id } = req.query;
+  try {
+    //@ts-ignore
+    const { body } = await spotifyApi.getArtistAlbums(id, { limit: 3 });
+    const arrOfAlbumUrls = [];
+    for (let i = 0; i < body.items.length; i++) {
+      arrOfAlbumUrls.push(body.items[i].images[0].url);
+    }
+    res.status(200).json(arrOfAlbumUrls);
+  } catch (err) {
+    return next(err);
+  }
 };
