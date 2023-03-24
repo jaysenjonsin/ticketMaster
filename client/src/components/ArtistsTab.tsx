@@ -10,19 +10,21 @@ type Props = {
   albums: any; //ARRAY OF ARRAY OF ALBUM URLS
 };
 
+// TRY INLINE BLOCK   --> TRY PUT THEM ALL IN SAME BOX
+
 const ArtistsTab = ({ extraArtistDetails: artists, albums }: Props) => {
   console.log('ALBUM GANG SHI ', albums);
   console.log('ARTISTS GANG SHI ', artists);
   return (
     <>
       {artists && artists.length > 0 ? (
-        <Container style={{ width: '90%', padding: '1rem' }}>
+        <Container style={{ width: '95%', padding: '1rem' }}>
           {/* indicators: gets rid of bottom indicators. interval: turns off auto switching items */}
           <Carousel indicators={false} interval={null}>
             {artists.map((artist: any, idx: number) => (
               <Carousel.Item key={artist.id}>
                 <Row className='align-items-center justify-content-center justify-content-md-start'>
-                  {/* md = 3 because there are 4 items, so each should take 3/12 space */}
+                  {/* md = 3 because there are 4 items, so each column should take 3/12 of the row */}
                   <Col xs={12} md={3}>
                     {/* for each item, align el's along cross axis */}
                     <div className='d-flex flex-column align-items-center'>
@@ -32,19 +34,24 @@ const ArtistsTab = ({ extraArtistDetails: artists, albums }: Props) => {
                         style={{
                           objectFit: 'cover',
                           borderRadius: '400px',
-                          height: '8.2rem',
-                          width: '8.2rem',
+                          height: '8.0rem',
+                          width: '8.0rem',
                         }}
                       />
-                      <h2 style={{ color: '#32c9a6', textAlign: 'center' }}>
+                      <h4
+                        style={{
+                          color: '#32c9a6',
+                          textAlign: 'center',
+                        }}
+                      >
                         {artist.name}
-                      </h2>
+                      </h4>
                     </div>
                   </Col>
                   <Col xs={12} md={3}>
                     <div className='d-flex flex-column align-items-center '>
-                      <h3 style={{ color: '#32c9a6' }}>Popularity</h3>
-                      <div style={{ width: '4.5rem' }}>
+                      <h4 style={{ color: '#32c9a6' }}>Popularity</h4>
+                      <div style={{ width: '3.5rem' }}>
                         <CircularProgressbar
                           value={artist.popularity}
                           text={`${artist.popularity}`}
@@ -53,14 +60,20 @@ const ArtistsTab = ({ extraArtistDetails: artists, albums }: Props) => {
                     </div>
                   </Col>
                   <Col xs={12} md={3}>
-                    <div className='d-flex flex-column align-items-center'>
-                      <h3 style={{ color: '#32c9a6' }}>Followers</h3>
+                    <div
+                      className='d-flex flex-column align-items-center'
+                      style={{ marginBottom: '1rem' }}
+                    >
+                      <h4 style={{ color: '#32c9a6' }}>Followers</h4>
                       {/* toLocaleString: adds the commas to the number */}
                       <p>{artist.followers.total.toLocaleString()}</p>
                     </div>
                   </Col>
                   <Col xs={12} md={3}>
-                    <div className='d-flex flex-column align-items-center'>
+                    <div
+                      className='d-flex flex-column align-items-center'
+                      style={{ marginBottom: '.4rem' }}
+                    >
                       <h4 style={{ color: '#32c9a6' }}>Spotify Link</h4>
                       <a
                         href={artist.external_urls.spotify}
@@ -78,6 +91,7 @@ const ArtistsTab = ({ extraArtistDetails: artists, albums }: Props) => {
                     Albums featuring {artist.name}
                   </h4>
                   <div className='d-flex flex-wrap justify-content-center'>
+                    {/* within artists, iterate through albums array at the same index of the current artist - so use albums[idx].map, not just albums.map */}
                     {albums[idx]?.map((albumUrl: any, index: number) => {
                       console.log('ALBUM URLS: ', albumUrl);
                       return (
@@ -121,7 +135,6 @@ const ArtistsTab = ({ extraArtistDetails: artists, albums }: Props) => {
               backgroundColor: 'white',
               color: 'red',
               borderRadius: '1rem',
-              width: '70%',
               maxWidth: '800px',
             }}
           >
