@@ -115,7 +115,7 @@ const EventsTab = ({ event }: Props) => {
           }}
         >
           <img
-            src={event?.seatmap.staticUrl}
+            src={event?.seatmap?.staticUrl}
             alt='event venue'
             style={{
               objectFit: 'cover',

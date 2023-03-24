@@ -32,3 +32,12 @@ ul.nav.nav-tabs {
   position: absolute;
   top: 5rem;
 } */
+
+/* the element has to have both of these classes to apply */
+.hide-controls .carousel-control-next-icon,
+.hide-controls .carousel-control-prev-icon,
+.hide-controls .carousel-control-prev,
+.hide-controls .carousel-control-next {
+  display: none;
+  cursor: none;
+}

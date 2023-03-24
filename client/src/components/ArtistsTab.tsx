@@ -13,14 +13,17 @@ type Props = {
 // TRY INLINE BLOCK   --> TRY PUT THEM ALL IN SAME BOX
 
 const ArtistsTab = ({ extraArtistDetails: artists, albums }: Props) => {
-  console.log('ALBUM GANG SHI ', albums);
-  console.log('ARTISTS GANG SHI ', artists);
+  const hideControlsClass = artists?.length <= 1 ? 'hide-controls' : '';
   return (
     <>
-      {artists && artists.length > 0 ? (
+      {artists?.length > 0 ? (
         <Container style={{ width: '95%', padding: '1rem' }}>
           {/* indicators: gets rid of bottom indicators. interval: turns off auto switching items */}
-          <Carousel indicators={false} interval={null}>
+          <Carousel
+            indicators={false}
+            interval={null}
+            className={hideControlsClass}
+          >
             {artists.map((artist: any, idx: number) => (
               <Carousel.Item key={artist.id}>
                 <Row className='align-items-center justify-content-center justify-content-md-start'>
