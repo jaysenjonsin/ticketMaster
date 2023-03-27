@@ -13,6 +13,7 @@ type Props = {
 // TRY INLINE BLOCK   --> TRY PUT THEM ALL IN SAME BOX
 
 const ArtistsTab = ({ extraArtistDetails: artists, albums }: Props) => {
+  //hide-controls is in index.css
   const hideControlsClass = artists?.length <= 1 ? 'hide-controls' : '';
   return (
     <>

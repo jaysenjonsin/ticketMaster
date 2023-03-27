@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import moment from 'moment';
 import { Container, Row, Col } from 'react-bootstrap';
 import { checkTicketStatus } from '../utils/checkTicketStatus';
@@ -5,13 +6,32 @@ import { checkTicketStatus } from '../utils/checkTicketStatus';
 type Props = {
   extraVenueDetails: any;
 };
-const VenueTab = ({ extraVenueDetails: venue }: Props) => {
-  // console.log('EXTRA VEN DETAIL ON G ', extraVenueDetails);
-  // const venue = extraVenueDetails?._embedded.venues[0];
-  // console.log('VENUE EXTRAA AYO' + venue.name);
 
-  // THIS ACTUALLY EXISTS FOR SOME SO CONDITIONALLY RENDER IT
-  console.log('extra venue stuff ', venue?.boxOfficeInfo);
+//tells typescript that the showMore object can have keys of any string value with boolean values. allows use of dynamic keys with the showMore object without any type errors
+type ShowMore = {
+  [key: string]: boolean;
+};
+
+const VenueTab = ({ extraVenueDetails: venue }: Props) => {
+  console.log('venue data: ', venue);
+  console.log('rules:  ', venue?.generalInfo?.generalRule);
+  const [showMore, setShowMore] = useState<ShowMore>({
+    openHours: false,
+    generalRule: false,
+    childRule: false,
+  });
+
+  const shouldShowMoreOpenHours = venue?.boxOfficeInfo?.openHoursDetail.length;
+
+  //whenever theres lots of repetitive state change, just use this pattern(like in form data)
+  const toggleShowMore = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const { name } = e.target as HTMLButtonElement;
+    setShowMore((prev) => ({
+      ...prev,
+      [name]: !prev[name],
+    }));
+  };
+
   return (
     <Container
       style={{
@@ -21,8 +41,7 @@ const VenueTab = ({ extraVenueDetails: venue }: Props) => {
       <Row>
         <Col
           xs={12} //on small screens, take up full column
-          md={6} //on med screens, take  up half column (the col after this takes up other half)
-          // className='mx-auto my-auto'
+          md={venue?.generalInfo || venue?.boxOfficeInfo ? 6 : 12} //if there is info on right side, make this col take up half screen. if no info on right side, it will just be in the middle (takes up full column)
           style={{
             display: 'flex',
             alignItems: 'center',
@@ -32,13 +51,12 @@ const VenueTab = ({ extraVenueDetails: venue }: Props) => {
         >
           <h3>Name</h3>
           <p>{venue?.name}</p>
-          <h3>Address</h3>
-          <p>
-            {/* {venue?.address?.line1} {venue?.city?.name}, {venue?.state?.name} */}
+          {venue?.address && <h3>Address</h3>}
+          <p style={{ textAlign: 'center' }}>
+            {venue?.address?.line1} {venue?.city?.name}, {venue?.state?.name}
           </p>
-          {/* ONLY RENDER IF AVAIL */}
-          <h3>Phone number</h3>
-          <p>phone number stuff here</p>
+          {venue?.boxOfficeInfo?.phoneNumberDetail && <h3>Phone number</h3>}
+          <p>{venue?.boxOfficeInfo?.phoneNumberDetail}</p>
         </Col>
         <Col
           xs={12} //on small screens, take up full column
@@ -52,20 +70,23 @@ const VenueTab = ({ extraVenueDetails: venue }: Props) => {
             padding: '2rem 0',
           }}
         >
-          <h3>Open Hours</h3>
+          {venue?.boxOfficeInfo?.openHoursDetail && <h3>Open Hours</h3>}
           <p style={{ textAlign: 'center' }}>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem quae
-            velit asperiores voluptatem quia ex totam non accusamus quidem
-            veritatis quos, est aliquid maxime, minus eius repellendus voluptas
-            culpa mollitia maiores vero! Nam natus quos doloribus consequuntur
-            molestias veniam eos, quaerat aperiam laboriosam voluptate unde
-            culpa itaque! Laborum eum aperiam architecto distinctio modi velit
-            sed? Tempora animi explicabo eos blanditiis!
+            {venue?.boxOfficeInfo?.openHoursDetail}
           </p>
-          <h3>General Rule</h3>
-          <p style={{ textAlign: 'center' }}>general rul stuff ehre</p>
-          <h3>Child Rule</h3>
-          <p style={{ textAlign: 'center' }}>child rule stuff</p>
+          {venue?.generalInfo?.generalRule && <h3>General Rule</h3>}
+          <p style={{ textAlign: 'center' }}>
+            {venue?.generalInfo?.generalRule}
+          </p>
+          {/* another way to conditionally render instead of doing the header and p separately */}
+          {venue?.generalInfo?.childRule && (
+            <>
+              <h3>Child Rule</h3>
+              <p style={{ textAlign: 'center' }}>
+                {venue?.generalInfo?.childRule}
+              </p>
+            </>
+          )}
         </Col>
       </Row>
     </Container>

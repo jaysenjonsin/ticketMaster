@@ -33,7 +33,7 @@ ul.nav.nav-tabs {
   top: 5rem;
 } */
 
-/* the element has to have both of these classes to apply */
+/* when using multiple classes like below, the element has to have all of the classes to apply. */
 .hide-controls .carousel-control-next-icon,
 .hide-controls .carousel-control-prev-icon,
 .hide-controls .carousel-control-prev,
