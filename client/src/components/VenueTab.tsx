@@ -21,16 +21,36 @@ const VenueTab = ({ extraVenueDetails: venue }: Props) => {
     childRule: false,
   });
 
-  const shouldShowMoreOpenHours = venue?.boxOfficeInfo?.openHoursDetail.length;
-
-  //whenever theres lots of repetitive state change, just use this pattern(like in form data)
-  const toggleShowMore = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const { name } = e.target as HTMLButtonElement;
+  //whenever theres lots of repetitive state change, just use this pattern(like in form data using [e.target.name]: e.target.value)
+  const toggleShowMore = (name: string) => {
     setShowMore((prev) => ({
       ...prev,
       [name]: !prev[name],
     }));
   };
+
+  const shouldShowOpenHoursAnchor =
+    venue?.boxOfficeInfo?.openHoursDetail.length > 90;
+
+  const shouldShowGeneralRuleAnchor =
+    venue?.generalInfo?.generalRule.length > 90;
+
+  const shouldShowChildRuleAnchor = venue?.generalInfo?.childRule.length > 90;
+
+  // make sure not to slice a word off mid word, find the next space available to slice at instead. Ideally abstract this into a func and set these on page load
+  const slicedOpenHoursDetail = venue?.boxOfficeInfo?.openHoursDetail?.slice(
+    0,
+    venue?.boxOfficeInfo?.openHoursDetail?.indexOf(' ', 90) || 90
+  );
+
+  const slicedGeneralRule = venue?.generalInfo?.generalRule?.slice(
+    0,
+    venue?.generalInfo?.generalRule?.indexOf(' ', 90) || 90
+  );
+  const slicedChildRule = venue?.generalInfo?.childRule?.slice(
+    0,
+    venue?.generalInfo?.childRule?.indexOf(' ', 90) || 90
+  );
 
   return (
     <Container
@@ -72,19 +92,49 @@ const VenueTab = ({ extraVenueDetails: venue }: Props) => {
         >
           {venue?.boxOfficeInfo?.openHoursDetail && <h3>Open Hours</h3>}
           <p style={{ textAlign: 'center' }}>
-            {venue?.boxOfficeInfo?.openHoursDetail}
+            {showMore.openHours || !shouldShowOpenHoursAnchor
+              ? venue?.boxOfficeInfo?.openHoursDetail
+              : slicedOpenHoursDetail}
           </p>
+          {shouldShowOpenHoursAnchor && (
+            <a
+              style={{ color: '#00CED1', cursor: 'pointer' }}
+              onClick={() => toggleShowMore('openHours')}
+            >
+              {showMore.openHours ? 'show less' : 'show more'}
+            </a>
+          )}
           {venue?.generalInfo?.generalRule && <h3>General Rule</h3>}
           <p style={{ textAlign: 'center' }}>
-            {venue?.generalInfo?.generalRule}
+            {showMore.generalInfo || !shouldShowGeneralRuleAnchor
+              ? venue?.generalInfo?.generalRule
+              : slicedGeneralRule}
           </p>
+          {shouldShowGeneralRuleAnchor && (
+            <a
+              style={{ color: '#00CED1', cursor: 'pointer' }}
+              onClick={() => toggleShowMore('generalInfo')}
+            >
+              {showMore.generalInfo ? 'show less' : 'show more'}
+            </a>
+          )}
           {/* another way to conditionally render instead of doing the header and p separately */}
           {venue?.generalInfo?.childRule && (
             <>
               <h3>Child Rule</h3>
               <p style={{ textAlign: 'center' }}>
-                {venue?.generalInfo?.childRule}
+                {showMore.childRule || !shouldShowChildRuleAnchor
+                  ? venue?.generalInfo?.childRule
+                  : slicedChildRule}
               </p>
+              {shouldShowChildRuleAnchor && (
+                <a
+                  style={{ color: '#00CED1', cursor: 'pointer' }}
+                  onClick={() => toggleShowMore('childRule')}
+                >
+                  {showMore.childRule ? 'show less' : 'show more'}
+                </a>
+              )}
             </>
           )}
         </Col>
