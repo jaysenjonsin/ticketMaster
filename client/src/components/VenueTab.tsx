@@ -40,7 +40,7 @@ const VenueTab = ({ extraVenueDetails: venue }: Props) => {
   // make sure not to slice a word off mid word, find the next space available to slice at instead. Ideally abstract this into a func and set these on page load
   const slicedOpenHoursDetail = venue?.boxOfficeInfo?.openHoursDetail?.slice(
     0,
-    venue?.boxOfficeInfo?.openHoursDetail?.indexOf(' ', 90) || 90
+    venue?.boxOfficeInfo?.openHoursDetail?.indexOf(' ', 90) || 90 //make sure to include || in case indexOf value doesnt exist
   );
 
   const slicedGeneralRule = venue?.generalInfo?.generalRule?.slice(

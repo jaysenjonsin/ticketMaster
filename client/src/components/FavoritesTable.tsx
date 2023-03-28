@@ -11,19 +11,28 @@ const FavoritesTable = (props: Props) => {
     if (sortedFavorites) setFavorites(sortedFavorites);
     console.log('FAVS ', favorites);
   }, []);
+
+  const removeItem = (id: string) => {
+    localStorage.removeItem(id);
+    const filtered = favorites!.filter((item) => item.id !== id);
+    setFavorites(filtered);
+  };
   return (
     <>
       {favorites ? (
         <>
-          <div style={{ color: 'white' }}>hello</div>
-          {/* <div style={{ color: 'white' }}>FavoritesTable</div>
-          {favorites.map((favorite, index) => {
+          <div style={{ color: 'white' }}>FavoritesTable</div>
+          {favorites.map((favorite) => {
             return (
-              <div key={index} style={{ color: 'white' }}>
-                {favorite}
+              <div
+                key={favorite.id}
+                onClick={() => removeItem(favorite.id)}
+                style={{ color: 'white' }}
+              >
+                {favorite.id}
               </div>
             );
-          })} */}
+          })}
         </>
       ) : (
         <div style={{ color: 'white' }}>No favorites to show</div>
