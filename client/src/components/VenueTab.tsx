@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import moment from 'moment';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col, Button } from 'react-bootstrap';
 import { checkTicketStatus } from '../utils/checkTicketStatus';
 
 type Props = {
@@ -137,6 +137,17 @@ const VenueTab = ({ extraVenueDetails: venue }: Props) => {
               )}
             </>
           )}
+        </Col>
+      </Row>
+      <Row>
+        <Col
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            marginBottom: '1rem',
+          }}
+        >
+          <Button>Show Venue on Google map</Button>
         </Col>
       </Row>
     </Container>

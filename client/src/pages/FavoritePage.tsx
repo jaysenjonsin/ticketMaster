@@ -1,4 +1,5 @@
 import React from 'react';
+import FavoritesTable from '../components/FavoritesTable';
 import Layout from '../components/Layout';
 
 type Props = {};
@@ -6,7 +7,7 @@ type Props = {};
 const FavoritePage = (props: Props) => {
   return (
     <Layout>
-      <div style={{ color: 'white' }}>hello</div>
+      <FavoritesTable />
     </Layout>
   );
 };

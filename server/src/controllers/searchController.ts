@@ -111,7 +111,6 @@ export const getExtraVenueDetails = async (
   }
 };
 
-// using client credential flow, so access token cannot be refreshed. Just have to call this when token runs out
 export const getArtistData = async (
   req: Request,
   res: Response,
@@ -127,6 +126,8 @@ export const getArtistData = async (
   }
 };
 
+//To get new token: make GET request to:  http://localhost:5000/search/spotify/refresh
+// using client credential flow, so access token cannot be refreshed. Just have to call this when token runs out
 export const refreshSpotifyCredentials = (_: Request, res: Response) => {
   spotifyApi.clientCredentialsGrant().then(
     (data) => {

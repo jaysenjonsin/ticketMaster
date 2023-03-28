@@ -8,6 +8,7 @@ import { getExtraEventDetails } from '../services/getExtraEventDetails';
 import { getExtraVenueDetails } from '../services/getExtraVenueDetails';
 import { getRelevantArtists } from '../utils/getRelevantArtists';
 import { getArtistAlbums } from '../utils/getArtistAlbums';
+import moment from 'moment';
 
 type Props = {
   event: any;
@@ -65,10 +66,12 @@ const DetailsCard = ({ event, setShowDetailCard }: Props) => {
       window.alert('Removed from Favorites!');
     } else {
       const eventObject = {
+        id: event.id,
         date: event.dates.start.localDate,
         event: event.name,
         category: `${event?.classifications?.[0]?.segment?.name} | ${event?.classifications?.[0]?.genre?.name} | ${event?.classifications?.[0]?.subGenre?.name}`,
         venue: event._embedded.venues[0].name,
+        timeAdded: moment().valueOf(),
       };
       localStorage.setItem(event.id, JSON.stringify(eventObject));
       setIsFavorite(true);
