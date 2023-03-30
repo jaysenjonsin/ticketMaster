@@ -14,26 +14,27 @@ const FavoritesTable = (props: Props) => {
   }, []);
 
   const removeItem = (id: string) => {
+    window.alert('Event Removed From Favorites!');
     localStorage.removeItem(id);
     const filtered = favorites!.filter((item) => item.id !== id);
     setFavorites(filtered);
   };
   return (
     <>
-      <Table striped variant='light'>
-        <thead>
-          <tr style={{ textAlign: 'center' }}>
-            <th>#</th>
-            <th>Date</th>
-            <th>Event</th>
-            <th>Category</th>
-            <th>Venue</th>
-            <th>Favorite</th>
-          </tr>
-        </thead>
-        <tbody>
-          {favorites ? (
-            favorites?.map((favorite, idx) => {
+      {favorites ? (
+        <Table striped variant='light'>
+          <thead>
+            <tr style={{ textAlign: 'center' }}>
+              <th>#</th>
+              <th>Date</th>
+              <th>Event</th>
+              <th>Category</th>
+              <th>Venue</th>
+              <th>Favorite</th>
+            </tr>
+          </thead>
+          <tbody>
+            {favorites?.map((favorite, idx) => {
               return (
                 <tr key={favorite.id} style={{ textAlign: 'center' }}>
                   <td>{idx + 1}</td>
@@ -41,17 +42,20 @@ const FavoritesTable = (props: Props) => {
                   <td>{favorite.event}</td>
                   <td>{favorite.category}</td>
                   <td>{favorite.venue}</td>
-                  <td style={{ cursor: 'pointer', margin: '0 auto' }}>
+                  <td
+                    style={{ cursor: 'pointer', margin: '0 auto' }}
+                    onClick={() => removeItem(favorite.id)}
+                  >
                     <span className='material-icons'>delete_outline</span>
                   </td>
                 </tr>
               );
-            })
-          ) : (
-            <div style={{ color: 'white' }}>no favorites</div>
-          )}
-        </tbody>
-      </Table>
+            })}
+          </tbody>
+        </Table>
+      ) : (
+        <div style={{ color: 'white' }}>no favorites</div>
+      )}
     </>
   );
 };
