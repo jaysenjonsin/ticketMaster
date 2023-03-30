@@ -284,3 +284,28 @@ const Search = () => {
 };
 
 export default Search;
+
+//async type ahead implementation: replace the keyword Form.Group with this
+// <Form.Group controlId='formKeyword'>
+//   <Form.Label>
+//     Keyword<span style={{ color: 'red' }}>*</span>
+//   </Form.Label>
+//   <AsyncTypeahead
+//     filterBy={filterBy}
+//     id='keyword'
+//     isLoading={isLoading}
+//     labelKey='name'
+//     options={suggestions}
+//     placeholder='Enter keyword'
+//     onSearch={handleSuggestions}
+//     renderMenuItemChildren={(suggestion: any) => (
+//       <div
+//         onClick={() => {
+//           setKeyword(suggestion.name);
+//         }}
+//       >
+//         {suggestion.name}
+//       </div>
+//     )}
+//   />
+// </Form.Group>;
