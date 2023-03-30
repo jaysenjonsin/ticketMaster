@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Table } from 'react-bootstrap';
 import { sortLocalStorage } from '../utils/sortLocalStorage';
 
 type Props = {};
@@ -19,24 +20,38 @@ const FavoritesTable = (props: Props) => {
   };
   return (
     <>
-      {favorites ? (
-        <>
-          <div style={{ color: 'white' }}>FavoritesTable</div>
-          {favorites.map((favorite) => {
-            return (
-              <div
-                key={favorite.id}
-                onClick={() => removeItem(favorite.id)}
-                style={{ color: 'white' }}
-              >
-                {favorite.id}
-              </div>
-            );
-          })}
-        </>
-      ) : (
-        <div style={{ color: 'white' }}>No favorites to show</div>
-      )}
+      <Table striped variant='light'>
+        <thead>
+          <tr style={{ textAlign: 'center' }}>
+            <th>#</th>
+            <th>Date</th>
+            <th>Event</th>
+            <th>Category</th>
+            <th>Venue</th>
+            <th>Favorite</th>
+          </tr>
+        </thead>
+        <tbody>
+          {favorites ? (
+            favorites?.map((favorite, idx) => {
+              return (
+                <tr key={favorite.id} style={{ textAlign: 'center' }}>
+                  <td>{idx + 1}</td>
+                  <td>{favorite.date}</td>
+                  <td>{favorite.event}</td>
+                  <td>{favorite.category}</td>
+                  <td>{favorite.venue}</td>
+                  <td style={{ cursor: 'pointer', margin: '0 auto' }}>
+                    <span className='material-icons'>delete_outline</span>
+                  </td>
+                </tr>
+              );
+            })
+          ) : (
+            <div style={{ color: 'white' }}>no favorites</div>
+          )}
+        </tbody>
+      </Table>
     </>
   );
 };

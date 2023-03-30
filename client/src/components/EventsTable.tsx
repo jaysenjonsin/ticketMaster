@@ -30,7 +30,7 @@ const EventsTable = ({
         >
           <Table striped bordered hover variant='dark'>
             <thead /*groups the header content in a table */>
-              <tr>
+              <tr style={{ textAlign: 'center' }}>
                 <th>Date</th>
                 <th>Icon</th>
                 <th>Event</th>
@@ -42,7 +42,7 @@ const EventsTable = ({
               {arrOfSearchResults.map((event: any, index: number) => (
                 <tr
                   key={index}
-                  style={{ cursor: 'pointer' }}
+                  style={{ cursor: 'pointer', textAlign: 'center' }}
                   onClick={() => selectEvent(event)}
                 >
                   <td>{event?.dates.start.localDate}</td>
