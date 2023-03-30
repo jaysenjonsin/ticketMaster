@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import SearchPage from './pages/SearchPage';
-import FavoritePage from './pages/FavoritePage';
+import SearchPage from './pages/Search';
+import FavoritePage from './pages/Favorite';
 import NotFound from './pages/NotFound';
 
 function App() {

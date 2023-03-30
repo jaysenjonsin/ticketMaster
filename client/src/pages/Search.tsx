@@ -11,7 +11,7 @@ import { searchEvent } from '../services/searchEvent';
 import { flattenSuggestions } from '../utils/flattenSuggestions';
 import EventsTable from '../components/EventsTable';
 
-const SearchPage = () => {
+const Search = () => {
   const [keyword, setKeyword] = useState('');
   const [distance, setDistance] = useState('');
   const [category, setCategory] = useState('');
@@ -283,4 +283,4 @@ const SearchPage = () => {
   );
 };
 
-export default SearchPage;
+export default Search;

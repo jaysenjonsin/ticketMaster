@@ -4,7 +4,7 @@ import Layout from '../components/Layout';
 
 type Props = {};
 
-const FavoritePage = (props: Props) => {
+const Favorite = (props: Props) => {
   return (
     <Layout>
       <FavoritesTable />
@@ -12,4 +12,4 @@ const FavoritePage = (props: Props) => {
   );
 };
 
-export default FavoritePage;
+export default Favorite;
